@@ -5,7 +5,7 @@
 body {
   /*font-family: 'Rubik', sans-serif;*/
   font-family: 'DM Sans', sans-serif;
-  background-color: #EFDACA;
+  background-color: #AACBCD;
   padding-top: 40px;
 }
 
@@ -15,30 +15,10 @@ h1, h2, h3 {
 
 
 a {
-  color: #9D420F;
+  color: #092A2C;
 }
 
 a:hover {
-  color: #792F06;
+  color: #021819;
 }
 
-.btn {
-  background-color: #E3966B;
-  border: 1px solid #E3966B;
-}
-
-.btn:hover {
-  background-color: #9D420F;
-  border: 1px solid #9D420F;
-
-}
-
-.btn:focus {
-  background-color: #9D420F;
-  border: 1px solid #9D420F;
-
-}
-
-.pom {
-  max-width: 150px;
-}
