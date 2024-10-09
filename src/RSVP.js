@@ -40,18 +40,21 @@ function RSVP() {
   // Convert the entered code to lowercase
   const enteredCode = code.toLowerCase();
 
-  // Convert party codes to lowercase (assuming party is an object with party codes as keys)
-  const foundParty = Object.keys(party).find(partyCode => partyCode.toLowerCase() === enteredCode);
-  
-  if (foundParty) {
-    setParty(party[foundParty]); // Use the matching party key
-    setPartyFetched(true); // Mark that a valid party was fetched
+  // Convert party codes to lowercase and find the matching party
+  const foundPartyKey = Object.keys(party).find(
+    (partyCode) => partyCode.toLowerCase() === enteredCode
+  );
 
-    // Initialize member RSVPs and allergies with RSVP as null/empty string
+  if (foundPartyKey) {
+    const foundParty = party[foundPartyKey]; // Access the party object using the found key
+    setParty(foundParty);
+    setPartyFetched(true);
+
+    // Initialize member RSVPs and allergies
     const initialRSVPs = {};
     const initialAllergies = {};
-    party[foundParty].members.forEach((member) => {
-      initialRSVPs[member.name] = null; // Set RSVP to null or empty string
+    foundParty.members.forEach((member) => {
+      initialRSVPs[member.name] = null;
       initialAllergies[member.name] = member.allergies;
     });
     setMemberRSVPs(initialRSVPs);
@@ -158,7 +161,6 @@ function RSVP() {
 
           {party.members && (
             <>
-              <h2>Guests</h2>
               <ul className="guest-list">
                 {party.members.map((member) => (
                   <li key={member.name} style={{ marginBottom: "20px" }}>
@@ -187,7 +189,7 @@ function RSVP() {
                         <input
                           type="text"
                           id={`${member.name}-allergies`}
-                          className="allergy-input"
+                          className="input-field"
                           value={memberAllergies[member.name]}
                           onChange={(e) =>
                             handleAllergyChange(member.name, e.target.value)
