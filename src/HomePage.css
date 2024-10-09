@@ -1,0 +1,25 @@
+.container {
+  max-width: 960px; /* Set a maximum width for the container */
+  margin: 0 auto; /* Center the container */
+  padding: 20px;
+}
+
+.rsvp-link {
+  display: inline-block; 
+  padding: 10px 20px;
+  background-color: #4CAF50; /* Green */
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+/* Media query for smaller screens (e.g., mobile) */
+@media (max-width: 768px) {
+  .container {
+    width: 90%; /* Make the container narrower on smaller screens */
+  }
+
+  h1 {
+    font-size: 24px; /* Reduce heading size */
+  }
+}
