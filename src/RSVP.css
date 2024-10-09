@@ -5,8 +5,13 @@
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
+  text-align: center; /* Center-align text */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center everything horizontally */
 }
 
+/* Guest list styling */
 .guest-list {
   list-style: none; /* Remove bullet points */
   padding: 0;
@@ -16,17 +21,23 @@
   margin-bottom: 20px;
   display: flex;
   flex-direction: column;
+  align-items: center; /* Center each guest list item */
 }
 
 .guest-list li div {
   margin-bottom: 10px;
+  text-align: center; /* Center-align text inside each guest item */
 }
 
+/* Chip container styling */
 .chip-container {
   display: flex;
   gap: 10px; /* Add space between chips */
+  justify-content: center; /* Center the chips horizontally */
+  flex-wrap: wrap; /* Allow chips to wrap if necessary */
 }
 
+/* Chip styling */
 .chip {
   padding: 10px 15px;
   border: none;
@@ -36,6 +47,7 @@
   color: #333;
   transition: background-color 0.3s;
   box-shadow: none; /* No shadow on chips */
+  text-align: center;
 }
 
 .chip.active {
@@ -46,7 +58,6 @@
 .chip:hover {
   background-color: #ddd; /* Keep hover color change, but no movement */
   transform: translateY(0)!important; /* Reset position when clicked */
-
 }
 
 /* Styling for input fields */
@@ -71,7 +82,7 @@
 /* Styling for the submit button */
 button {
   padding: 12px 20px;
-  background-color: #092A2C; /* Green background */
+  background-color: #092A2C; /* Dark green background */
   color: white;
   border: none;
   border-radius: 8px;
@@ -104,13 +115,12 @@ label[for*='code'] {
   font-weight: bold;
 }
 
-
-
 /* Styling for the image container */
 .rsvp-image-container {
   display: flex;
   flex-wrap: wrap; /* Allow images to wrap to the next line if needed */
   gap: 20px; /* Add space between the images */
+  justify-content: center; /* Center-align the images */
 }
 
 /* Styling for images */
