@@ -8,11 +8,17 @@ function RSVP() {
   const [isLoading, setIsLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState(""); // New state for error message
 
-  // State to track RSVP status for each member
   const [memberRSVPs, setMemberRSVPs] = useState({});
-  // State to track allergies for each member
   const [memberAllergies, setMemberAllergies] = useState({});
+
+  const guestImages = [
+    'guest-ill1.png',
+    'guest-ill2.png',
+    'guest-ill3.png',
+    'guest-ill4.png',
+  ];
 
   useEffect(() => {
     const fetchPartyData = async () => {
@@ -36,38 +42,33 @@ function RSVP() {
     setCode(event.target.value);
   };
 
- const handleSubmit = () => {
-  // Convert the entered code to lowercase
-  const enteredCode = code.toLowerCase();
+  const handleSubmit = () => {
+    const enteredCode = code.toLowerCase();
+    const foundPartyKey = Object.keys(party).find(
+      (partyCode) => partyCode.toLowerCase() === enteredCode
+    );
 
-  // Convert party codes to lowercase and find the matching party
-  const foundPartyKey = Object.keys(party).find(
-    (partyCode) => partyCode.toLowerCase() === enteredCode
-  );
+    if (foundPartyKey) {
+      const foundParty = party[foundPartyKey];
+      setParty(foundParty);
+      setPartyFetched(true);
 
-  if (foundPartyKey) {
-    const foundParty = party[foundPartyKey]; // Access the party object using the found key
-    setParty(foundParty);
-    setPartyFetched(true);
-
-    // Initialize member RSVPs and allergies
-    const initialRSVPs = {};
-    const initialAllergies = {};
-    foundParty.members.forEach((member) => {
-      initialRSVPs[member.name] = null;
-      initialAllergies[member.name] = member.allergies;
-    });
-    setMemberRSVPs(initialRSVPs);
-    setMemberAllergies(initialAllergies);
-  } else {
-    alert("Invalid code. Please try again.");
-  }
-};
-
+      const initialRSVPs = {};
+      const initialAllergies = {};
+      foundParty.members.forEach((member) => {
+        initialRSVPs[member.name] = null;
+        initialAllergies[member.name] = member.allergies || ""; // Initialize allergies as empty string if null
+      });
+      setMemberRSVPs(initialRSVPs);
+      setMemberAllergies(initialAllergies);
+    } else {
+      alert("Invalid code. Please try again.");
+    }
+  };
 
   const handleRSVPChange = (memberId, newRsvpStatus) => {
-    // Hide the success message when the user changes RSVP status
     setShowSuccess(false);
+    setErrorMessage(""); // Clear any error messages when changing RSVP
     setMemberRSVPs((prevRSVPs) => ({
       ...prevRSVPs,
       [memberId]: newRsvpStatus,
@@ -75,7 +76,6 @@ function RSVP() {
   };
 
   const handleAllergyChange = (memberId, newAllergies) => {
-    // Hide the success message when the user changes allergies
     setShowSuccess(false);
     setMemberAllergies((prevAllergies) => ({
       ...prevAllergies,
@@ -84,6 +84,16 @@ function RSVP() {
   };
 
   const handleRSVP = async () => {
+    // Check if all members have an RSVP status
+    const allRSVPsSelected = Object.values(memberRSVPs).every(
+      (rsvp) => rsvp !== null
+    );
+
+    if (!allRSVPsSelected) {
+      setErrorMessage("Please choose an RSVP status for all guests.");
+      return;
+    }
+
     setIsLoading(true);
     try {
       const response = await fetch("http://localhost:5001/rsvp", {
@@ -96,7 +106,6 @@ function RSVP() {
         setShowSuccess(true);
         setSuccessMessage("RSVP submitted successfully!");
 
-        // Update RSVP status and allergies in the local state
         setParty((prevParty) => ({
           ...prevParty,
           members: prevParty.members.map((member) => ({
@@ -122,7 +131,6 @@ function RSVP() {
     <div className="rsvp-container">
       <h1>RSVP</h1>
 
-      
       {!partyFetched && (
         <form onSubmit={handleSubmit}>
           <input
@@ -136,72 +144,83 @@ function RSVP() {
         </form>
       )}
 
-      {partyFetched && party && ( // Conditionally render the party section when the code is valid
+      {partyFetched && party && (
         <div>
-          {party.guests && (
-            <p>Number of Guests: {party.guests}</p>
-          )}
+          {party.guests && <p>Number of Guests: {party.guests}</p>}
 
           {party.note && <p>{party.note}</p>}
 
-         {party.photos && (
-  <div className="rsvp-image-container">
-    {party.photos.map((photo, index) => (
-      <img
-        key={index}
-        src={photo}
-        alt={`Wedding photo ${index + 1}`}
-        className="rsvp-images"  // Apply the image class
-      />
-    ))}
-  </div>
-)}
-
-
+          {party.photos && (
+            <div className="party-image-container">
+              {party.photos.map((photo, index) => (
+                <img
+                  key={index}
+                  src={photo}
+                  alt={`Party photo ${index + 1}`}
+                  className="party-images"
+                />
+              ))}
+            </div>
+          )}
 
           {party.members && (
             <>
               <ul className="guest-list">
-                {party.members.map((member) => (
-                  <li key={member.name} style={{ marginBottom: "20px" }}>
-                    <div><strong>{member.name}</strong></div>
-                    
-                    <div className="chip-container">
-                      <button
-                        className={`chip ${memberRSVPs[member.name] === "yes" ? "active" : ""}`}
-                        onClick={() => handleRSVPChange(member.name, "yes")}
-                      >
-                        Will be attending
-                      </button>
-                      <button
-                        className={`chip ${memberRSVPs[member.name] === "no" ? "active" : ""}`}
-                        onClick={() => handleRSVPChange(member.name, "no")}
-                      >
-                        Sadly cannot attend
-                      </button>
-                    </div>
+                {party.members.map((member, index) => (
+                  <li key={member.name} className="guest-card">
+                    <div className="guest-card-content">
+                      {/* Assign image to guest, cycling through the array */}
+                      <img
+                        src={guestImages[index % guestImages.length]} // Cycle through images
+                        alt="Guest illustration"
+                        className="guest-card-image"
+                      />
+                      <div className="guest-details">
+                        <div><strong>{member.name}</strong></div>
 
-                    {memberRSVPs[member.name] === "yes" && (  // Conditionally render allergies input
-                      <div>
-                        <label htmlFor={`${member.name}-allergies`}>
-                          Allergies:
-                        </label>
-                        <input
-                          type="text"
-                          id={`${member.name}-allergies`}
-                          className="input-field"
-                          value={memberAllergies[member.name]}
-                          onChange={(e) =>
-                            handleAllergyChange(member.name, e.target.value)
-                          }
-                        />
+                        {/* RSVP Chips Below the Name */}
+                        <div className="chip-container">
+                          <button
+                            className={`chip ${memberRSVPs[member.name] === "yes" ? "active" : ""}`}
+                            onClick={() => handleRSVPChange(member.name, "yes")}
+                          >
+                            Will be attending
+                          </button>
+                          <button
+                            className={`chip ${memberRSVPs[member.name] === "no" ? "active" : ""}`}
+                            onClick={() => handleRSVPChange(member.name, "no")}
+                          >
+                            Sadly cannot attend
+                          </button>
+                        </div>
+
+                        {/* Conditionally render allergies textarea below, without label */}
+                        {memberRSVPs[member.name] === "yes" && (
+                          <div className="allergy-container">
+                            <textarea
+                              id={`${member.name}-allergies`}
+                              className="input-textarea"
+                              value={memberAllergies[member.name]}
+                              onChange={(e) => handleAllergyChange(member.name, e.target.value)}
+                              placeholder={
+                                memberAllergies[member.name] === ""
+                                  ? "Please let us know about any dietary restrictions"
+                                  : ""
+                              }
+                              rows="3"
+                            />
+                          </div>
+                        )}
                       </div>
-                    )}
+                    </div>
                   </li>
                 ))}
               </ul>
             </>
           )}
+
+          {/* Display error message if RSVP status is not selected for all guests */}
+          {errorMessage && <div className="error-message">{errorMessage}</div>}
 
           {party.members && (
             <button onClick={handleRSVP} disabled={isLoading}>
@@ -209,9 +228,7 @@ function RSVP() {
             </button>
           )}
 
-          {showSuccess && (
-            <div className="success-message">{successMessage}</div>
-          )}
+          {showSuccess && <div className="success-message">{successMessage}</div>}
         </div>
       )}
     </div>
