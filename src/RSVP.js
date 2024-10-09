@@ -8,7 +8,9 @@ function RSVP() {
   const [isLoading, setIsLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState(""); // New state for error message
+  const [errorMessage, setErrorMessage] = useState("");
+  const [attendingCount, setAttendingCount] = useState(0);
+  const [rsvpSubmitted, setRsvpSubmitted] = useState(false); // Track if RSVP has been submitted
 
   const [memberRSVPs, setMemberRSVPs] = useState({});
   const [memberAllergies, setMemberAllergies] = useState({});
@@ -55,10 +57,42 @@ function RSVP() {
 
       const initialRSVPs = {};
       const initialAllergies = {};
+      let rsvpAlreadySubmitted = false; // Track if RSVP was already submitted
+      let initialCount = 0; // Track number of guests initially marked as "yes"
+
+      // Initialize RSVP and allergy states from partyData.json
       foundParty.members.forEach((member) => {
-        initialRSVPs[member.name] = null;
-        initialAllergies[member.name] = member.allergies || ""; // Initialize allergies as empty string if null
+        // If RSVP is blank or null, set it to null in the state
+        initialRSVPs[member.name] = member.rsvp ? member.rsvp : null;
+
+        // If RSVP is "yes", increase the count
+        if (member.rsvp === "yes") {
+          initialCount += 1;
+          rsvpAlreadySubmitted = true;
+        }
+
+        // Initialize allergies
+        initialAllergies[member.name] = member.allergies || "";
       });
+
+      // Set the initial attending count based on the data
+      setAttendingCount(initialCount);
+
+      // If RSVP was already submitted, set the submitted state and success message
+      if (rsvpAlreadySubmitted) {
+        setRsvpSubmitted(true);
+        setShowSuccess(true); // Ensure the success message is shown
+        calculateSuccessMessage(initialRSVPs); // Calculate and display the success message based on existing data
+      } else {
+        // Check if all RSVPs are "no" to set the "We'll miss you" message
+        const allNoRSVPs = Object.values(initialRSVPs).every((rsvp) => rsvp === "no");
+        if (allNoRSVPs) {
+          setRsvpSubmitted(true);
+          setShowSuccess(true);
+          setSuccessMessage("We'll miss you, but hope to see you soon!");
+        }
+      }
+
       setMemberRSVPs(initialRSVPs);
       setMemberAllergies(initialAllergies);
     } else {
@@ -66,9 +100,23 @@ function RSVP() {
     }
   };
 
+  // Update the RSVP status for each guest
   const handleRSVPChange = (memberId, newRsvpStatus) => {
     setShowSuccess(false);
     setErrorMessage(""); // Clear any error messages when changing RSVP
+
+    // Update attending count, ensuring it doesn't go negative
+    setAttendingCount((prevCount) => {
+      const isCurrentlyYes = memberRSVPs[memberId] === "yes";
+      if (newRsvpStatus === "yes" && !isCurrentlyYes) {
+        return prevCount + 1;
+      }
+      if (newRsvpStatus === "no" && isCurrentlyYes) {
+        return Math.max(prevCount - 1, 0); // Ensure count never goes below 0
+      }
+      return prevCount;
+    });
+
     setMemberRSVPs((prevRSVPs) => ({
       ...prevRSVPs,
       [memberId]: newRsvpStatus,
@@ -84,7 +132,6 @@ function RSVP() {
   };
 
   const handleRSVP = async () => {
-    // Check if all members have an RSVP status
     const allRSVPsSelected = Object.values(memberRSVPs).every(
       (rsvp) => rsvp !== null
     );
@@ -104,16 +151,8 @@ function RSVP() {
 
       if (response.ok) {
         setShowSuccess(true);
-        setSuccessMessage("RSVP submitted successfully!");
-
-        setParty((prevParty) => ({
-          ...prevParty,
-          members: prevParty.members.map((member) => ({
-            ...member,
-            rsvp: memberRSVPs[member.name],
-            allergies: memberAllergies[member.name],
-          })),
-        }));
+        setRsvpSubmitted(true); // Mark RSVP as submitted
+        calculateSuccessMessage(memberRSVPs); // Calculate success message based on current RSVPs
       } else {
         const data = await response.json();
         console.error("RSVP failed:", data.error);
@@ -126,6 +165,26 @@ function RSVP() {
       setIsLoading(false);
     }
   };
+
+  // Function to calculate and set the success message
+  const calculateSuccessMessage = (rsvpData) => {
+    const attendingGuests = Object.keys(rsvpData).filter(
+      (guestName) => rsvpData[guestName] === "yes"
+    );
+
+    if (attendingGuests.length === 0) {
+      setSuccessMessage("We'll miss you, but hope to see you soon!");
+    } else if (attendingGuests.length === 1) {
+      setSuccessMessage(`We can't wait to celebrate with you, ${attendingGuests[0]}!`);
+    } else {
+      const guestList = attendingGuests.slice(0, -1).join(", ");
+      const lastGuest = attendingGuests[attendingGuests.length - 1];
+      setSuccessMessage(`We can't wait to celebrate with you, ${guestList} and ${lastGuest}!`);
+    }
+  };
+
+  // Determine if at least one RSVP is selected to show the bottom bar
+  const atLeastOneRSVP = Object.values(memberRSVPs).some((rsvp) => rsvp !== null);
 
   return (
     <div className="rsvp-container">
@@ -219,16 +278,26 @@ function RSVP() {
             </>
           )}
 
-          {/* Display error message if RSVP status is not selected for all guests */}
-          {errorMessage && <div className="error-message">{errorMessage}</div>}
+          {/* Conditionally render the sticky bottom bar once at least one RSVP is selected */}
+          {atLeastOneRSVP && (
+            <div className="bottom-bar">
+              {/* Show success message or guest count */}
+              {showSuccess && successMessage ? (
+                <p>{successMessage}</p>
+              ) : (
+                <>
+                  <p>Guests Attending: {attendingCount}</p>
+                  {/* Show error message if there's an error */}
+                  {errorMessage && <p className="error-message-bar">{errorMessage}</p>}
+                </>
+              )}
 
-          {party.members && (
-            <button onClick={handleRSVP} disabled={isLoading}>
-              {isLoading ? "Submitting..." : "Submit RSVP"}
-            </button>
+              {/* Change button CTA to 'Re-submit RSVP' after submission */}
+              <button onClick={handleRSVP} disabled={isLoading}>
+                {isLoading ? "Submitting..." : rsvpSubmitted ? "Update RSVP" : "Submit RSVP"}
+              </button>
+            </div>
           )}
-
-          {showSuccess && <div className="success-message">{successMessage}</div>}
         </div>
       )}
     </div>

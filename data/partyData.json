@@ -9,12 +9,12 @@
     "members": [
       {
         "name": "Joan Beron",
-        "rsvp": "yes",
+        "rsvp": "no",
         "allergies": "lactose interolant"
       },
       {
         "name": "Paul Sorkin",
-        "rsvp": "yes",
+        "rsvp": "no",
         "allergies": ""
       }
     ]
@@ -28,12 +28,12 @@
     "members": [
       {
         "name": "Peter Jones",
-        "rsvp": "yes",
+        "rsvp": "no",
         "allergies": "None"
       },
       {
         "name": "Mary Jones",
-        "rsvp": "yes",
+        "rsvp": "no",
         "allergies": "Gluten"
       }
     ]
