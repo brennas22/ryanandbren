@@ -36,25 +36,31 @@ function RSVP() {
     setCode(event.target.value);
   };
 
-  const handleSubmit = () => {
-    const foundParty = party[code];
-    if (foundParty) {
-      setParty(foundParty);
-      setPartyFetched(true); // Mark that a valid party was fetched
+ const handleSubmit = () => {
+  // Convert the entered code to lowercase
+  const enteredCode = code.toLowerCase();
 
-      // Initialize member RSVPs and allergies with RSVP as null/empty string
-      const initialRSVPs = {};
-      const initialAllergies = {};
-      foundParty.members.forEach((member) => {
-        initialRSVPs[member.name] = null; // Set RSVP to null or empty string
-        initialAllergies[member.name] = member.allergies;
-      });
-      setMemberRSVPs(initialRSVPs);
-      setMemberAllergies(initialAllergies);
-    } else {
-      alert("Invalid code. Please try again.");
-    }
-  };
+  // Convert party codes to lowercase (assuming party is an object with party codes as keys)
+  const foundParty = Object.keys(party).find(partyCode => partyCode.toLowerCase() === enteredCode);
+  
+  if (foundParty) {
+    setParty(party[foundParty]); // Use the matching party key
+    setPartyFetched(true); // Mark that a valid party was fetched
+
+    // Initialize member RSVPs and allergies with RSVP as null/empty string
+    const initialRSVPs = {};
+    const initialAllergies = {};
+    party[foundParty].members.forEach((member) => {
+      initialRSVPs[member.name] = null; // Set RSVP to null or empty string
+      initialAllergies[member.name] = member.allergies;
+    });
+    setMemberRSVPs(initialRSVPs);
+    setMemberAllergies(initialAllergies);
+  } else {
+    alert("Invalid code. Please try again.");
+  }
+};
+
 
   const handleRSVPChange = (memberId, newRsvpStatus) => {
     // Hide the success message when the user changes RSVP status
@@ -120,9 +126,11 @@ function RSVP() {
             value={code}
             onChange={handleCodeChange}
             placeholder="Enter your party code"
+            className="input-field"  // Apply the same styling
           />
           <button onClick={handleSubmit}>Submit Code</button>
         </div>
+
       )}
 
       {partyFetched && party && ( // Conditionally render the party section when the code is valid
