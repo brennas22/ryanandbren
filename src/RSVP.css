@@ -45,6 +45,8 @@
 
 .chip:hover {
   background-color: #ddd; /* Keep hover color change, but no movement */
+  transform: translateY(0)!important; /* Reset position when clicked */
+
 }
 
 /* Styling for input fields */
@@ -102,6 +104,24 @@ label[for*='code'] {
   font-weight: bold;
 }
 
+
+
+/* Styling for the image container */
+.rsvp-image-container {
+  display: flex;
+  flex-wrap: wrap; /* Allow images to wrap to the next line if needed */
+  gap: 20px; /* Add space between the images */
+}
+
+/* Styling for images */
+.rsvp-images {
+  width: calc(50% - 10px); /* Each image takes up half the width minus the gap */
+  max-width: 100%; /* Prevent images from overflowing the container */
+  height: auto; /* Maintain aspect ratio */
+  margin-bottom: 20px; /* Ensure some spacing below images */
+  border-radius: 4px;
+}
+
 /* Media query for smaller screens (e.g., mobile) */
 @media (max-width: 600px) {
   .rsvp-container {
@@ -122,5 +142,10 @@ label[for*='code'] {
 
   .chip {
     width: 100%; /* Full width for smaller screens */
+  }
+
+  .rsvp-images {
+    width: 100%; /* On small screens, make the images take up full width */
+    margin-bottom: 20px; /* Keep spacing on mobile */
   }
 }

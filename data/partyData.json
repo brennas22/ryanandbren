@@ -1,26 +1,21 @@
 {
-  "PARTYCODE1": {
-    "guests": 3,
+  "SORKINFAM": {
+    "guests": 2,
     "note": "So glad you all can make it!",
     "photos": [
-      "/photo1.jpg",
-      "/photo2.jpg"
+      "/sorkinfam1.jpg",
+      "/sorkinfam2.jpeg"
     ],
     "members": [
       {
-        "name": "John Doe",
+        "name": "Joan Beron",
         "rsvp": "yes",
-        "allergies": "shellfish and cheese"
+        "allergies": "None"
       },
       {
-        "name": "Jane Doe",
+        "name": "Paul Sorkin",
         "rsvp": "no",
-        "allergies": "Peanuts"
-      },
-      {
-        "name": "Baby Doe",
-        "rsvp": "no",
-        "allergies": "Dairy"
+        "allergies": "None"
       }
     ]
   },

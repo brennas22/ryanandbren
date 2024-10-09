@@ -119,18 +119,18 @@ function RSVP() {
     <div className="rsvp-container">
       <h1>RSVP</h1>
 
-      {!partyFetched && ( // Conditionally render input only if a party hasn't been successfully fetched
-        <div>
+      
+      {!partyFetched && (
+        <form onSubmit={handleSubmit}>
           <input
             type="text"
             value={code}
             onChange={handleCodeChange}
             placeholder="Enter your party code"
-            className="input-field"  // Apply the same styling
+            className="input-field"
           />
-          <button onClick={handleSubmit}>Submit Code</button>
-        </div>
-
+          <button type="submit">Submit Code</button>
+        </form>
       )}
 
       {partyFetched && party && ( // Conditionally render the party section when the code is valid
@@ -141,15 +141,20 @@ function RSVP() {
 
           {party.note && <p>{party.note}</p>}
 
-          {party.photos &&
-            party.photos.map((photo, index) => (
-              <img
-                key={index}
-                src={photo}
-                alt={`Wedding photo ${index + 1}`}
-                style={{ width: "200px", height: "auto" }}
-              />
-            ))}
+         {party.photos && (
+  <div className="rsvp-image-container">
+    {party.photos.map((photo, index) => (
+      <img
+        key={index}
+        src={photo}
+        alt={`Wedding photo ${index + 1}`}
+        className="rsvp-images"  // Apply the image class
+      />
+    ))}
+  </div>
+)}
+
+
 
           {party.members && (
             <>
