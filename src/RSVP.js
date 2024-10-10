@@ -237,7 +237,7 @@ function RSVP() {
             placeholder="Enter your party code"
             className="input-field"
           />
-          <button type="submit">Go to RSVP</button>
+          <button type="submit">RSVP</button>
           {invalidCodeError && <p className="error-message">{invalidCodeError}</p>}
         </form>
       )}

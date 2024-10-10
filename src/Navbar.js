@@ -1,0 +1,24 @@
+import React from 'react';
+import { Link } from 'react-router-dom'; // Use Link for navigation between routes
+import './Navbar.css'; // Import your CSS file
+
+
+function Navbar() {
+  return (
+    <nav className="navbar">
+      <ul>
+        <li>
+          <Link to="/">Home</Link>
+        </li>
+        <li>
+          <Link to="/rsvp">RSVP</Link>
+        </li>
+        <li>
+          <Link to="/faq">FAQ</Link>
+        </li>
+      </ul>
+    </nav>
+  );
+}
+
+export default Navbar;
