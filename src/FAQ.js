@@ -19,6 +19,8 @@ function FAQ() {
       <p>Your very special party code will let you know exactly who is invited, but we're inviting everyone's real plus ones. If you didn't get a plus one it's probably because we don't like your significant other and you should consider breaking up with them.</p>
       <h3>I'm visiting from out of town, where should I stay?</h3>
       <p>Blah blah hotel recommendations</p>
+      <h3>Is it open bar?</h3>
+      <p>Pls.</p>
     </div>
   );
 }
