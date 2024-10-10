@@ -236,6 +236,27 @@ button:active {
 }
 
 
+/* Guest note card styling */
+.guest-note-card {
+  border: 1px solid black; /* Black border */
+  border-radius: 12px; /* Border radius */
+  padding: 24px; /* Padding inside the card */
+  font-family: 'Crimson Text', serif; /* Crimson Text font */
+  font-size: 1.2rem;
+  margin-bottom: 20px; /* Space below the card */
+  
+}
+
+.guest-note-card p {
+  margin: 0; /* Remove default margin on the paragraph */
+}
+
+.party-note {
+  margin-top: 15px; /* Add space above the party note */
+  margin-bottom: 10px; /* Add space below the party note */
+}
+
+
 /* Media query for smaller screens */
 @media (max-width: 600px) {
   .rsvp-container {

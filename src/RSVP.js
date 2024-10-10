@@ -62,8 +62,8 @@ function RSVP() {
 
       // Initialize RSVP and allergy states from partyData.json
       foundParty.members.forEach((member) => {
-        // If RSVP is blank or null, set it to null in the state
-        initialRSVPs[member.name] = member.rsvp ? member.rsvp : null;
+        const fullName = `${member.firstname} ${member.lastname}`;
+        initialRSVPs[fullName] = member.rsvp ? member.rsvp : null;
 
         // If RSVP is "yes", increase the count
         if (member.rsvp === "yes") {
@@ -72,7 +72,7 @@ function RSVP() {
         }
 
         // Initialize allergies
-        initialAllergies[member.name] = member.allergies || "";
+        initialAllergies[fullName] = member.allergies || "";
       });
 
       // Set the initial attending count based on the data
@@ -100,14 +100,29 @@ function RSVP() {
     }
   };
 
+  // Generate the greeting for the party note using first names
+  const generateGreeting = (members) => {
+    const firstNames = members.map(member => member.firstname);
+    
+    if (firstNames.length === 1) {
+      return `Dear ${firstNames[0]},`;
+    } else if (firstNames.length === 2) {
+      return `Dear ${firstNames[0]} and ${firstNames[1]},`;
+    } else {
+      const guestList = firstNames.slice(0, -1).join(", ");
+      const lastGuest = firstNames[firstNames.length - 1];
+      return `Dear ${guestList}, and ${lastGuest},`;
+    }
+  };
+
   // Update the RSVP status for each guest
-  const handleRSVPChange = (memberId, newRsvpStatus) => {
+  const handleRSVPChange = (fullName, newRsvpStatus) => {
     setShowSuccess(false);
     setErrorMessage(""); // Clear any error messages when changing RSVP
 
     // Update attending count, ensuring it doesn't go negative
     setAttendingCount((prevCount) => {
-      const isCurrentlyYes = memberRSVPs[memberId] === "yes";
+      const isCurrentlyYes = memberRSVPs[fullName] === "yes";
       if (newRsvpStatus === "yes" && !isCurrentlyYes) {
         return prevCount + 1;
       }
@@ -119,15 +134,15 @@ function RSVP() {
 
     setMemberRSVPs((prevRSVPs) => ({
       ...prevRSVPs,
-      [memberId]: newRsvpStatus,
+      [fullName]: newRsvpStatus,
     }));
   };
 
-  const handleAllergyChange = (memberId, newAllergies) => {
+  const handleAllergyChange = (fullName, newAllergies) => {
     setShowSuccess(false);
     setMemberAllergies((prevAllergies) => ({
       ...prevAllergies,
-      [memberId]: newAllergies,
+      [fullName]: newAllergies,
     }));
   };
 
@@ -166,19 +181,23 @@ function RSVP() {
     }
   };
 
-  // Function to calculate and set the success message
+  // Function to calculate and set the success message (using first names only)
   const calculateSuccessMessage = (rsvpData) => {
     const attendingGuests = Object.keys(rsvpData).filter(
       (guestName) => rsvpData[guestName] === "yes"
     );
 
-    if (attendingGuests.length === 0) {
+    const attendingFirstNames = attendingGuests.map((fullName) => {
+      return fullName.split(" ")[0]; // Extract first name
+    });
+
+    if (attendingFirstNames.length === 0) {
       setSuccessMessage("We'll miss you, but hope to see you soon!");
-    } else if (attendingGuests.length === 1) {
-      setSuccessMessage(`We can't wait to celebrate with you, ${attendingGuests[0]}!`);
+    } else if (attendingFirstNames.length === 1) {
+      setSuccessMessage(`We can't wait to celebrate with you, ${attendingFirstNames[0]}!`);
     } else {
-      const guestList = attendingGuests.slice(0, -1).join(", ");
-      const lastGuest = attendingGuests[attendingGuests.length - 1];
+      const guestList = attendingFirstNames.slice(0, -1).join(", ");
+      const lastGuest = attendingFirstNames[attendingFirstNames.length - 1];
       setSuccessMessage(`We can't wait to celebrate with you, ${guestList} and ${lastGuest}!`);
     }
   };
@@ -207,7 +226,7 @@ function RSVP() {
         <div>
           {party.guests && <p>Number of Guests: {party.guests}</p>}
 
-          {party.note && <p>{party.note}</p>}
+         
 
           {party.photos && (
             <div className="party-image-container">
@@ -222,58 +241,73 @@ function RSVP() {
             </div>
           )}
 
+           {party.note && (
+            <div className="guest-note-card">
+              <p>{generateGreeting(party.members)}</p>
+              <div  className="party-note">
+                <p>{party.note}</p>
+              </div>
+              <p>Love,</p>
+              <p>Ryan and Brenna</p>
+            </div>
+          )}
+
           {party.members && (
             <>
               <ul className="guest-list">
-                {party.members.map((member, index) => (
-                  <li key={member.name} className="guest-card">
-                    <div className="guest-card-content">
-                      {/* Assign image to guest, cycling through the array */}
-                      <img
-                        src={guestImages[index % guestImages.length]} // Cycle through images
-                        alt="Guest illustration"
-                        className="guest-card-image"
-                      />
-                      <div className="guest-details">
-                        <div><strong>{member.name}</strong></div>
+                {party.members.map((member, index) => {
+                  const fullName = `${member.firstname} ${member.lastname}`;
+                  return (
+                    <li key={fullName} className="guest-card">
+                      <div className="guest-card-content">
+                        {/* Assign image to guest, cycling through the array */}
+                        <img
+                          src={guestImages[index % guestImages.length]} // Cycle through images
+                          alt="Guest illustration"
+                          className="guest-card-image"
+                        />
+                        <div className="guest-details">
+                          {/* Show both first and last name on guest card */}
+                          <div><strong>{`${member.firstname} ${member.lastname}`}</strong></div>
 
-                        {/* RSVP Chips Below the Name */}
-                        <div className="chip-container">
-                          <button
-                            className={`chip ${memberRSVPs[member.name] === "yes" ? "active" : ""}`}
-                            onClick={() => handleRSVPChange(member.name, "yes")}
-                          >
-                            Will be attending
-                          </button>
-                          <button
-                            className={`chip ${memberRSVPs[member.name] === "no" ? "active" : ""}`}
-                            onClick={() => handleRSVPChange(member.name, "no")}
-                          >
-                            Sadly cannot attend
-                          </button>
-                        </div>
-
-                        {/* Conditionally render allergies textarea below, without label */}
-                        {memberRSVPs[member.name] === "yes" && (
-                          <div className="allergy-container">
-                            <textarea
-                              id={`${member.name}-allergies`}
-                              className="input-textarea"
-                              value={memberAllergies[member.name]}
-                              onChange={(e) => handleAllergyChange(member.name, e.target.value)}
-                              placeholder={
-                                memberAllergies[member.name] === ""
-                                  ? "Please let us know about any dietary restrictions"
-                                  : ""
-                              }
-                              rows="3"
-                            />
+                          {/* RSVP Chips Below the Name */}
+                          <div className="chip-container">
+                            <button
+                              className={`chip ${memberRSVPs[fullName] === "yes" ? "active" : ""}`}
+                              onClick={() => handleRSVPChange(fullName, "yes")}
+                            >
+                              Will be attending
+                            </button>
+                            <button
+                              className={`chip ${memberRSVPs[fullName] === "no" ? "active" : ""}`}
+                              onClick={() => handleRSVPChange(fullName, "no")}
+                            >
+                              Sadly cannot attend
+                            </button>
                           </div>
-                        )}
+
+                          {/* Conditionally render allergies textarea below, without label */}
+                          {memberRSVPs[fullName] === "yes" && (
+                            <div className="allergy-container">
+                              <textarea
+                                id={`${fullName}-allergies`}
+                                className="input-textarea"
+                                value={memberAllergies[fullName]}
+                                onChange={(e) => handleAllergyChange(fullName, e.target.value)}
+                                placeholder={
+                                  memberAllergies[fullName] === ""
+                                    ? "Please let us know about any dietary restrictions"
+                                    : ""
+                                }
+                                rows="3"
+                              />
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  </li>
-                ))}
+                    </li>
+                  );
+                })}
               </ul>
             </>
           )}
@@ -294,7 +328,7 @@ function RSVP() {
 
               {/* Change button CTA to 'Re-submit RSVP' after submission */}
               <button onClick={handleRSVP} disabled={isLoading}>
-                {isLoading ? "Submitting..." : rsvpSubmitted ? "Update RSVP" : "Submit RSVP"}
+                {isLoading ? "Submitting..." : rsvpSubmitted ? "Re-submit RSVP" : "Submit RSVP"}
               </button>
             </div>
           )}

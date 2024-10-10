@@ -1,19 +1,21 @@
 {
   "SORKINFAM": {
     "guests": 2,
-    "note": "So glad you all can make it!",
+    "note": "We're so excited to have you celebrate our second wedding with us",
     "photos": [
       "/sorkinfam1.jpg",
       "/sorkinfam2.jpeg"
     ],
     "members": [
       {
-        "name": "Joan Beron",
+        "firstname": "Joan",
+        "lastname": "Beron",
         "rsvp": "no",
-        "allergies": "lactose interolant"
+        "allergies": ""
       },
       {
-        "name": "Paul Sorkin",
+        "firstname": "Paul",
+        "lastname": "Sorkin",
         "rsvp": "no",
         "allergies": ""
       }
@@ -27,12 +29,14 @@
     ],
     "members": [
       {
-        "name": "Peter Jones",
+        "firstname": "Peter",
+        "lastname": "Jones",
         "rsvp": "no",
         "allergies": "None"
       },
       {
-        "name": "Mary Jones",
+        "firstname": "Mary",
+        "lastname": "Jones",
         "rsvp": "no",
         "allergies": "Gluten"
       }
