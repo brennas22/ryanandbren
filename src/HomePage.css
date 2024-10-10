@@ -1,6 +1,6 @@
 /* General container styling */
 .container {
-  max-width: 1200px; /* Set a maximum width for the container */
+  max-width: 1000px; /* Set a maximum width for the container */
   margin: 0 auto;    /* Center the container horizontally */
   text-align: center; /* Center the text and images */
   padding: 20px;     /* Add padding for some spacing around the content */

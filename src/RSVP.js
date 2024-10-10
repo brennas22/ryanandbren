@@ -19,7 +19,7 @@ function RSVP() {
   const [memberRSVPs, setMemberRSVPs] = useState({});
   const [memberAllergies, setMemberAllergies] = useState({});
   const [inputPartyCode, setInputPartyCode] = useState(partyCode || "");
-  
+
 
   const guestImages = [
     '/guest-ill1.png', 
@@ -246,7 +246,7 @@ function RSVP() {
 
       {partyFetched && party && (
         <div>
-          {party.guests && <p>Number of Guests: {party.guests}</p>}
+         
 
           {party.photos && (
             <div className="party-image-container">
