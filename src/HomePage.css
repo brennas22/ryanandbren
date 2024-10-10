@@ -20,21 +20,6 @@
   height: auto;
 }
 
-/* Media query for mobile screens */
-@media (max-width: 600px) {
-  .desktop-image {
-    display: none;
-  }
-
-  .mobile-image {
-    display: block;
-    margin: 0 auto;    /* Center the mobile image */
-    width: 100%;       /* Make the mobile image responsive */
-    height: auto;
-    max-width: 400px;  /* Set a maximum width for the mobile image */
-  }
-}
-
 /* Link styling */
 .rsvp-link {
   display: inline-block;
@@ -55,4 +40,21 @@
   margin-top: 10px;
   font-size: 14px;
 }
+
+/* Media query for mobile screens */
+@media (max-width: 600px) {
+  .desktop-image {
+    display: none;
+  }
+
+  .mobile-image {
+    display: block;
+    margin: 0 auto;    /* Center the mobile image */
+    width: 100%;       /* Make the mobile image responsive */
+    height: auto;
+    max-width: 400px;  /* Set a maximum width for the mobile image */
+  }
+}
+
+
 

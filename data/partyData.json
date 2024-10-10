@@ -11,12 +11,12 @@
         "firstname": "Joan",
         "lastname": "Beron",
         "rsvp": "no",
-        "allergies": ""
+        "allergies": "lactose inteorlant "
       },
       {
         "firstname": "Paul",
         "lastname": "Sorkin",
-        "rsvp": "no",
+        "rsvp": "yes",
         "allergies": ""
       }
     ]

@@ -2,13 +2,17 @@
 
 /* General container styling */
 .rsvp-container {
-  max-width: 800px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 20px;
   text-align: left;
   display: flex;
   flex-direction: column;
   padding-bottom: 100px; /* Add padding at the bottom to prevent content from being blocked */
+}
+
+h1 {
+  text-align: center;
 }
 
 /* Party image container styling */
@@ -89,18 +93,18 @@
   cursor: pointer;
   background-color: #f0f0f0;
   color: #333;
-  transition: background-color 0.3s;
+/*  transition: background-color 0.3s;*/
   box-shadow: none;
   text-align: center;
 }
 
 .chip.active {
-  background-color: #4caf50;
+  background-color: #13493E;
   color: white;
 }
 
 .chip:hover {
-  background-color: #ddd;
+  background-color: #092A2C !important;
   color: white;
   transform: translateY(0) !important;
 }
@@ -148,8 +152,8 @@
 }
 
 .input-field:focus {
-  border-color: #4caf50;
-  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+  border-color: #13493E;
+  box-shadow: 0 0 5px #13493E;
   outline: none;
 }
 

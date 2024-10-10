@@ -15,9 +15,11 @@ function RSVP() {
   const [rsvpSubmitted, setRsvpSubmitted] = useState(false);
   const [invalidCodeError, setInvalidCodeError] = useState(""); // Error message for invalid code
 
+
   const [memberRSVPs, setMemberRSVPs] = useState({});
   const [memberAllergies, setMemberAllergies] = useState({});
   const [inputPartyCode, setInputPartyCode] = useState(partyCode || "");
+  
 
   const guestImages = [
     '/guest-ill1.png', 
@@ -225,7 +227,7 @@ function RSVP() {
 
   return (
     <div className="rsvp-container">
-      <h1>RSVP</h1>
+      <h1>Let us know if you can come!</h1>
 
       {/* If no party code is provided, show the party code input */}
       {!partyCode && (
@@ -336,7 +338,7 @@ function RSVP() {
                 </>
               )}
               <button onClick={handleRSVP} disabled={isLoading}>
-                {isLoading ? "Submitting..." : rsvpSubmitted ? "Re-submit RSVP" : "Submit RSVP"}
+                {isLoading ? "Submitting..." : rsvpSubmitted ? "Update RSVP" : "Submit RSVP"}
               </button>
             </div>
           )}

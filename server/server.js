@@ -25,8 +25,11 @@ app.post('/rsvp', (req, res) => {
 
     // Update the members' RSVP status and allergies
     foundParty.members.forEach((member) => {
-      member.rsvp = memberRSVPs[member.name] || 'no';
-      member.allergies = memberAllergies[member.name] || '';
+      const fullName = `${member.firstname} ${member.lastname}`; // Construct the full name
+
+      // Update the RSVP status and allergies using the full name as the key
+      member.rsvp = memberRSVPs[fullName] || 'no';
+      member.allergies = memberAllergies[fullName] || '';
     });
 
     // Write the updated party data back to the file
