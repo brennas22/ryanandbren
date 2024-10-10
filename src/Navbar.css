@@ -35,3 +35,10 @@
   color: #092A2C;
   border-radius: 5px;
 }
+
+/* Media query for smaller screens */
+@media (max-width: 600px) {
+  .navbar {
+  justify-content: center; /* Center the navbar contents horizontally */
+ }
+}
