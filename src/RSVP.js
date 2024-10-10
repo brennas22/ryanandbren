@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from 'react-router-dom'; // Get the partyCode from the URL and useNavigate for redirection
+import { useParams, useNavigate } from 'react-router-dom';
 import "./RSVP.css";
 
 function RSVP() {
-  const { partyCode } = useParams(); // Get the partyCode from the URL (if available)
-  const navigate = useNavigate(); // Use for redirecting on code submission
+  const { partyCode } = useParams();
+  const navigate = useNavigate();
   const [party, setParty] = useState(null);
   const [partyFetched, setPartyFetched] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -12,19 +12,20 @@ function RSVP() {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [attendingCount, setAttendingCount] = useState(0);
-  const [rsvpSubmitted, setRsvpSubmitted] = useState(false); // Track if RSVP has been submitted
+  const [rsvpSubmitted, setRsvpSubmitted] = useState(false);
+  const [invalidCodeError, setInvalidCodeError] = useState(""); // Error message for invalid code
+
   const [memberRSVPs, setMemberRSVPs] = useState({});
   const [memberAllergies, setMemberAllergies] = useState({});
-  const [inputPartyCode, setInputPartyCode] = useState(partyCode || ""); // State for the party code input
+  const [inputPartyCode, setInputPartyCode] = useState(partyCode || "");
 
   const guestImages = [
-    '/guest-ill1.png',
+    '/guest-ill1.png', 
     '/guest-ill2.png',
     '/guest-ill3.png',
     '/guest-ill4.png',
   ];
 
-  // Fetch the party data if a party code is provided
   useEffect(() => {
     if (partyCode) {
       const fetchPartyData = async () => {
@@ -33,7 +34,6 @@ function RSVP() {
           if (response.ok) {
             const data = await response.json();
 
-            // Convert the party code to lowercase for case-insensitive comparison
             const foundPartyKey = Object.keys(data).find(
               (partyCodeKey) => partyCodeKey.toLowerCase() === partyCode.toLowerCase()
             );
@@ -48,7 +48,6 @@ function RSVP() {
               let rsvpAlreadySubmitted = false;
               let initialCount = 0;
 
-              // Initialize RSVP and allergy states from partyData.json
               foundParty.members.forEach((member) => {
                 const fullName = `${member.firstname} ${member.lastname}`;
                 initialRSVPs[fullName] = member.rsvp ? member.rsvp : null;
@@ -79,7 +78,7 @@ function RSVP() {
               setMemberRSVPs(initialRSVPs);
               setMemberAllergies(initialAllergies);
             } else {
-              setErrorMessage("Invalid party code.");
+              setInvalidCodeError("Invalid party code. Check your email for your code, or let Ryan and Brenna know if you're having trouble finding it!");
             }
           } else {
             console.error("Error fetching party data");
@@ -93,8 +92,20 @@ function RSVP() {
     }
   }, [partyCode]);
 
-  // Check if at least one RSVP has been submitted
-  const atLeastOneRSVP = Object.values(memberRSVPs).some((rsvp) => rsvp !== null); // Define atLeastOneRSVP
+  // Define the generateGreeting function here
+  const generateGreeting = (members) => {
+    const firstNames = members.map(member => member.firstname);
+    
+    if (firstNames.length === 1) {
+      return `Dear ${firstNames[0]},`;
+    } else if (firstNames.length === 2) {
+      return `Dear ${firstNames[0]} and ${firstNames[1]},`;
+    } else {
+      const guestList = firstNames.slice(0, -1).join(", ");
+      const lastGuest = firstNames[firstNames.length - 1];
+      return `Dear ${guestList}, and ${lastGuest},`;
+    }
+  };
 
   // Handle RSVP status changes
   const handleRSVPChange = (fullName, newRsvpStatus) => {
@@ -163,7 +174,6 @@ function RSVP() {
     }
   };
 
-  // Function to calculate the success message using only first names
   const calculateSuccessMessage = (rsvpData) => {
     const attendingGuests = Object.keys(rsvpData).filter(
       (guestName) => rsvpData[guestName] === "yes"
@@ -184,36 +194,42 @@ function RSVP() {
     }
   };
 
-  // Generate the greeting for the party note using first names
-  const generateGreeting = (members) => {
-    const firstNames = members.map(member => member.firstname);
-    
-    if (firstNames.length === 1) {
-      return `Dear ${firstNames[0]},`;
-    } else if (firstNames.length === 2) {
-      return `Dear ${firstNames[0]} and ${firstNames[1]},`;
-    } else {
-      const guestList = firstNames.slice(0, -1).join(", ");
-      const lastGuest = firstNames[firstNames.length - 1];
-      return `Dear ${guestList}, and ${lastGuest},`;
+  const atLeastOneRSVP = Object.values(memberRSVPs).some((rsvp) => rsvp !== null);
+
+  // Submit party code and check for validity without navigating
+  const handlePartyCodeSubmit = async (event) => {
+    event.preventDefault();
+    if (!inputPartyCode) return;
+
+    try {
+      const response = await fetch("http://localhost:5001/partyData");
+      if (response.ok) {
+        const data = await response.json();
+
+        const foundPartyKey = Object.keys(data).find(
+          (partyCodeKey) => partyCodeKey.toLowerCase() === inputPartyCode.toLowerCase()
+        );
+
+        if (foundPartyKey) {
+          navigate(`/rsvp/${inputPartyCode}`); // Navigate if the code is valid
+        } else {
+          setInvalidCodeError("Invalid party code. Check your email for your code, or let Ryan and Brenna know if you're having trouble finding it!");
+        }
+      } else {
+        console.error("Error fetching party data");
+      }
+    } catch (error) {
+      console.error("Error fetching party data:", error);
     }
   };
 
-  // Conditionally render the party code input if no party code is provided in the URL
   return (
     <div className="rsvp-container">
       <h1>RSVP</h1>
 
       {/* If no party code is provided, show the party code input */}
       {!partyCode && (
-        <form
-          onSubmit={(event) => {
-            event.preventDefault();
-            if (inputPartyCode) {
-              navigate(`/rsvp/${inputPartyCode}`); // Navigate to the correct RSVP page
-            }
-          }}
-        >
+        <form onSubmit={handlePartyCodeSubmit}>
           <input
             type="text"
             value={inputPartyCode}
@@ -222,6 +238,7 @@ function RSVP() {
             className="input-field"
           />
           <button type="submit">Go to RSVP</button>
+          {invalidCodeError && <p className="error-message">{invalidCodeError}</p>}
         </form>
       )}
 

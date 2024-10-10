@@ -49,3 +49,10 @@
 .rsvp-link:hover {
   background-color: #45a049;
 }
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
