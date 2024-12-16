@@ -21,6 +21,58 @@
       }
     ]
   },
+  "LIZZIEANDWILL": {
+    "guests": 2,
+    "note": "We're so excited to have you celebrate our second wedding with us",
+    "photos": [
+      "/lizziewill.jpeg",
+      "/lizziewill2.jpeg",
+      "/lizziewill3.jpg",
+      "/lizziewill4.jpg",
+      "/lizziewill5.jpg",
+      "/lizziewill6.jpg"
+    ],
+    "members": [
+      {
+        "firstname": "Lizzie",
+        "lastname": "Ferrante",
+        "rsvp": "",
+        "allergies": ""
+      },
+      {
+        "firstname": "Will",
+        "lastname": "Goegle",
+        "rsvp": "",
+        "allergies": ""
+      }
+    ]
+  },
+  "BOOBOOANDSIM": {
+    "guests": 2,
+    "note": "We're so excited to have you celebrate our second wedding with us",
+    "photos": [
+      "/louandsim.jpg",
+      "/louandsim2.jpg",
+      "/louandsim3.jpg",
+      "/louandsim4.jpeg",
+      "/louandsim5.jpg",
+      "/louandsim6.jpeg"
+    ],
+    "members": [
+      {
+        "firstname": "Louis",
+        "lastname": "Miyani",
+        "rsvp": "",
+        "allergies": ""
+      },
+      {
+        "firstname": "Simi",
+        "lastname": "Miyani",
+        "rsvp": "",
+        "allergies": "Hops"
+      }
+    ]
+  },
   "SHAUNANDJENNY": {
     "guests": 2,
     "note": "We love you both so much and it's been so fun spending time with you both over the years. You always bring a smile to our faces and we can't wait to dance the night away with you guys!",
