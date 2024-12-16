@@ -29,14 +29,14 @@
     ],
     "members": [
       {
-        "firstname": "Peter",
-        "lastname": "Jones",
-        "rsvp": "no",
+        "firstname": "Shaun",
+        "lastname": "Collins",
+        "rsvp": "",
         "allergies": "None"
       },
       {
-        "firstname": "Mary",
-        "lastname": "Jones",
+        "firstname": "Jenny",
+        "lastname": "Sexton",
         "rsvp": "no",
         "allergies": "Gluten"
       }
