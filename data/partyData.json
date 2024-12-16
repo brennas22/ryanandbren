@@ -37,13 +37,13 @@
       {
         "firstname": "Shaun",
         "lastname": "Collins",
-        "rsvp": "",
+        "rsvp": "yes",
         "allergies": ""
       },
       {
         "firstname": "Jenny",
         "lastname": "Sexton",
-        "rsvp": "",
+        "rsvp": "yes",
         "allergies": "Gluten intolerance, cross contanimation okay"
       }
     ]

@@ -184,25 +184,45 @@ const breakpointColumns = {
     }
   };
 
-  const calculateSuccessMessage = (rsvpData) => {
-    const attendingGuests = Object.keys(rsvpData).filter(
-      (guestName) => rsvpData[guestName] === "yes"
+ const calculateSuccessMessage = (rsvpData) => {
+  const attendingGuests = Object.keys(rsvpData).filter(
+    (guestName) => rsvpData[guestName] === "yes"
+  );
+
+  const attendingFirstNames = attendingGuests.map((fullName) => {
+    return fullName.split(" ")[0];
+  });
+
+  if (attendingFirstNames.length === 0) {
+    setSuccessMessage(
+      <>
+        We'll miss you, but hope to see you soon!{" "}
+        
+      </>
     );
+  } else if (attendingFirstNames.length === 1) {
+    setSuccessMessage(
+      <>
+        We can't wait to celebrate with you, {attendingFirstNames[0]}!{" "}
+        <a href="/faq" style={{ color: "#FFFFFF", textDecoration: "underline" }}>
+          Check out our FAQs
+        </a>
+      </>
+    );
+  } else {
+    const guestList = attendingFirstNames.slice(0, -1).join(", ");
+    const lastGuest = attendingFirstNames[attendingFirstNames.length - 1];
+    setSuccessMessage(
+      <>
+        We can't wait to celebrate with you, {guestList} and {lastGuest}!{" "}
+        <a href="/faq" style={{ color: "#FFFFFF", textDecoration: "underline" }}>
+          Check out our FAQs
+        </a>
+      </>
+    );
+  }
+};
 
-    const attendingFirstNames = attendingGuests.map((fullName) => {
-      return fullName.split(" ")[0];
-    });
-
-    if (attendingFirstNames.length === 0) {
-      setSuccessMessage("We'll miss you, but hope to see you soon!");
-    } else if (attendingFirstNames.length === 1) {
-      setSuccessMessage(`We can't wait to celebrate with you, ${attendingFirstNames[0]}!`);
-    } else {
-      const guestList = attendingFirstNames.slice(0, -1).join(", ");
-      const lastGuest = attendingFirstNames[attendingFirstNames.length - 1];
-      setSuccessMessage(`We can't wait to celebrate with you, ${guestList} and ${lastGuest}!`);
-    }
-  };
 
   const atLeastOneRSVP = Object.values(memberRSVPs).some((rsvp) => rsvp !== null);
 

@@ -5,7 +5,7 @@
   width: 90%; /* Set the container width to 80% */
  
   margin: 0 auto; /* Center the container horizontally */
-  padding: 20px; /* Add some padding for breathing room */
+  padding: 20px 0px 100px 0px; /* Add some padding for breathing room */
   box-sizing: border-box; /* Ensure padding doesn’t affect total width */
 }
 
