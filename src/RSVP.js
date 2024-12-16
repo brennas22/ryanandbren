@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
 import Masonry from 'react-masonry-css';
+import FAQ from './FAQ';
 import "./RSVP.css";
 
 function RSVP() {
@@ -256,6 +257,8 @@ const breakpointColumns = {
   return (
   <div className="rsvp-container">
     <h1>Let us know if you can come!</h1>
+    <h3>Please RSVP for each person below</h3>
+
 
     {/* If no party code is provided, show the party code input */}
     {!partyCode && (
@@ -274,6 +277,26 @@ const breakpointColumns = {
 
     {partyFetched && party && (
       <>
+
+        {/* Party Photos Section (Moved Below Guest Notes and RSVP Section) */}
+        {party.photos && (
+          <Masonry
+            breakpointCols={breakpointColumns}
+            className="party-image-container"
+            columnClassName="party-masonry-column"
+          >
+            {party.photos.map((photo, index) => (
+              <img
+                key={index}
+                src={photo}
+                alt={`Party photo ${index + 1}`}
+                className="party-images"
+              />
+            ))}
+          </Masonry>
+        )}
+
+
         {/* Constrained Section (Notes and Guest List) */}
         <div className="constrained-section">
           {party.note && (
@@ -350,24 +373,9 @@ const breakpointColumns = {
           
         </div>
 
-        {/* Party Photos Section (Moved Below Guest Notes and RSVP Section) */}
-        {party.photos && (
-          <Masonry
-            breakpointCols={breakpointColumns}
-            className="party-image-container"
-            columnClassName="party-masonry-column"
-          >
-            {party.photos.map((photo, index) => (
-              <img
-                key={index}
-                src={photo}
-                alt={`Party photo ${index + 1}`}
-                className="party-images"
-              />
-            ))}
-          </Masonry>
-        )}
+        <FAQ/>
 
+        
         {/* Bottom Bar for RSVP Summary */}
         {atLeastOneRSVP && (
           <div className="bottom-bar">

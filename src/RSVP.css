@@ -19,7 +19,7 @@
   box-sizing: border-box; /* Ensures padding doesn’t increase width */
 }
 
-h1 {
+h1, h3 {
   text-align: center;
 }
 
