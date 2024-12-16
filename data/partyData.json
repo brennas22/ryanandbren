@@ -25,20 +25,21 @@
     "guests": 2,
     "note": "Looking forward to celebrating with you!",
     "photos": [
-      "/photo3.jpg"
+      "/shaun-jenny.jpg",
+      "/shaun-jenny2.jpg"
     ],
     "members": [
       {
         "firstname": "Shaun",
         "lastname": "Collins",
         "rsvp": "",
-        "allergies": "None"
+        "allergies": "No allergies"
       },
       {
         "firstname": "Jenny",
         "lastname": "Sexton",
-        "rsvp": "no",
-        "allergies": "Gluten"
+        "rsvp": "",
+        "allergies": "Gluten intolerance, cross contanimation okay"
       }
     ]
   }
