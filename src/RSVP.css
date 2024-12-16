@@ -5,7 +5,7 @@
   width: 90%; /* Set the container width to 80% */
  
   margin: 0 auto; /* Center the container horizontally */
- padding: 20px 0 80px 0; /* Top, right, bottom, left padding */
+  padding: 20px; /* Add some padding for breathing room */
   box-sizing: border-box; /* Ensure padding doesn’t affect total width */
 }
 
@@ -69,7 +69,8 @@ h1 {
 /*  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
   padding: 20px;
   margin-bottom: 20px;
-  align-items: center;
+  align-items: top;
+  height: 180px;
 }
 
 .guest-card-content {
@@ -293,13 +294,18 @@ button:active {
 /* Media query for smaller screens */
 @media (max-width: 600px) {
   .rsvp-container {
-    width: 90%;
+    width: 95%;
     padding-bottom: 150px;
+  }
+
+  .constrained-section {
+    max-width: 100%;
   }
 
   .guest-card {
     flex-direction: column; /* Stack content vertically */
     align-items: center; /* Center-align content */
+    height: 100%;
   }
 
   .guest-card-content {

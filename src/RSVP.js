@@ -254,24 +254,6 @@ const breakpointColumns = {
 
     {partyFetched && party && (
       <>
-        {/* Party Photos Section */}
-        {party.photos && (
-          <Masonry
-  breakpointCols={breakpointColumns}
-  className="party-image-container"
-  columnClassName="party-masonry-column"
->
-  {party.photos.map((photo, index) => (
-    <img
-      key={index}
-      src={photo}
-      alt={`Party photo ${index + 1}`}
-      className="party-images"
-    />
-  ))}
-</Masonry>
-        )}
-
         {/* Constrained Section (Notes and Guest List) */}
         <div className="constrained-section">
           {party.note && (
@@ -282,10 +264,7 @@ const breakpointColumns = {
               </div>
               <p>Love,</p>
               <p>Ryan and Brenna</p>
-            </div>
-          )}
-
-          {party.members && (
+              {party.members && (
             <ul className="guest-list">
               {party.members.map((member, index) => {
                 const fullName = `${member.firstname} ${member.lastname}`;
@@ -345,7 +324,29 @@ const breakpointColumns = {
               })}
             </ul>
           )}
+            </div>
+          )}
+
+          
         </div>
+
+        {/* Party Photos Section (Moved Below Guest Notes and RSVP Section) */}
+        {party.photos && (
+          <Masonry
+            breakpointCols={breakpointColumns}
+            className="party-image-container"
+            columnClassName="party-masonry-column"
+          >
+            {party.photos.map((photo, index) => (
+              <img
+                key={index}
+                src={photo}
+                alt={`Party photo ${index + 1}`}
+                className="party-images"
+              />
+            ))}
+          </Masonry>
+        )}
 
         {/* Bottom Bar for RSVP Summary */}
         {atLeastOneRSVP && (
@@ -367,6 +368,7 @@ const breakpointColumns = {
     )}
   </div>
 );
+
 
 }
 
