@@ -10,13 +10,13 @@
       {
         "firstname": "Joan",
         "lastname": "Beron",
-        "rsvp": "yes",
+        "rsvp": "no",
         "allergies": "lactose inteorlant "
       },
       {
         "firstname": "Paul",
         "lastname": "Sorkin",
-        "rsvp": "yes",
+        "rsvp": "no",
         "allergies": ""
       }
     ]
@@ -36,13 +36,13 @@
       {
         "firstname": "Lizzie",
         "lastname": "Ferrante",
-        "rsvp": "",
+        "rsvp": "yes",
         "allergies": ""
       },
       {
         "firstname": "Will",
         "lastname": "Goegle",
-        "rsvp": "",
+        "rsvp": "yes",
         "allergies": ""
       }
     ]
@@ -62,12 +62,38 @@
       {
         "firstname": "Louis",
         "lastname": "Miyani",
-        "rsvp": "",
+        "rsvp": "yes",
         "allergies": ""
       },
       {
         "firstname": "Simi",
         "lastname": "Miyani",
+        "rsvp": "yes",
+        "allergies": "Hops"
+      }
+    ]
+  },
+  "HAYLEYANDCHRIS": {
+    "guests": 2,
+    "note": "We're so excited to have you celebrate our second wedding with us",
+    "photos": [
+      "/louandsim.jpg",
+      "/louandsim2.jpg",
+      "/louandsim3.jpg",
+      "/louandsim4.jpeg",
+      "/louandsim5.jpg",
+      "/louandsim6.jpeg"
+    ],
+    "members": [
+      {
+        "firstname": "Hayley",
+        "lastname": "Payne",
+        "rsvp": "",
+        "allergies": ""
+      },
+      {
+        "firstname": "Punky",
+        "lastname": "Petronio",
         "rsvp": "",
         "allergies": "Hops"
       }

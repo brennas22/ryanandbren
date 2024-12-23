@@ -22,6 +22,8 @@ function RSVP() {
   const [memberAllergies, setMemberAllergies] = useState({});
   const [inputPartyCode, setInputPartyCode] = useState(partyCode || "");
 
+  const API_URL = process.env.REACT_APP_API_URL;
+
 
   const guestImages = [
     '/guest-ill1.png', 
@@ -41,7 +43,7 @@ const breakpointColumns = {
     if (partyCode) {
       const fetchPartyData = async () => {
         try {
-          const response = await fetch("http://localhost:5001/partyData");
+          const response = await fetch(`${API_URL}/partyData`);
           if (response.ok) {
             const data = await response.json();
 
@@ -162,7 +164,7 @@ const breakpointColumns = {
 
     setIsLoading(true);
     try {
-      const response = await fetch("http://localhost:5001/rsvp", {
+      const response = await fetch(`${API_URL}/rsvp`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code: partyCode, memberRSVPs, memberAllergies }),
@@ -205,9 +207,6 @@ const breakpointColumns = {
     setSuccessMessage(
       <>
         We can't wait to celebrate with you, {attendingFirstNames[0]}!{" "}
-        <a href="/faq" style={{ color: "#FFFFFF", textDecoration: "underline" }}>
-          Check out our FAQs
-        </a>
       </>
     );
   } else {
@@ -216,9 +215,7 @@ const breakpointColumns = {
     setSuccessMessage(
       <>
         We can't wait to celebrate with you, {guestList} and {lastGuest}!{" "}
-        <a href="/faq" style={{ color: "#FFFFFF", textDecoration: "underline" }}>
-          Check out our FAQs
-        </a>
+        
       </>
     );
   }
@@ -233,7 +230,7 @@ const breakpointColumns = {
     if (!inputPartyCode) return;
 
     try {
-      const response = await fetch("http://localhost:5001/partyData");
+      const response = await fetch(`${API_URL}/partyData`);
       if (response.ok) {
         const data = await response.json();
 
