@@ -5,11 +5,12 @@ const PartyTable = () => {
     const [partyData, setPartyData] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const API_URL = process.env.REACT_APP_API_URL;
 
     useEffect(() => {
         const fetchPartyData = async () => {
             try {
-                const response = await fetch("http://localhost:5001/partyData");
+                const response = await fetch(`${API_URL}/partyData`);
                 if (response.ok) {
                     const data = await response.json();
                     setPartyData(data);
