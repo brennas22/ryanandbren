@@ -27,7 +27,7 @@ function RSVP() {
 
   const guestImages = [
     '/guest-ill1.png', 
-    '/guest-ill2.png',d
+    '/guest-ill2.png',
     '/guest-ill3.png',
     '/guest-ill4.png',
   ];
