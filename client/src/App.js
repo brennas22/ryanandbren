@@ -1,25 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Layout from './Layout'; // Import the Layout component
+import HomePage from './HomePage';
+import RSVP from './RSVP';
+import FAQ from './FAQ';
+import PartyTable from './PartyTable'; // Import the PartyTable component
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<HomePage />} /> {/* HomePage will be the default route */}
+          <Route path="rsvp" element={<RSVP />} />
+          <Route path="rsvp/:partyCode" element={<RSVP />} />
+          <Route path="faq" element={<FAQ />} />
+          <Route path="party-table" element={<PartyTable />} /> {/* Add a route for PartyTable */}
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
 export default App;
+
