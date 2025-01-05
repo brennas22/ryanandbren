@@ -1,0 +1,17 @@
+{
+  "name": "ryan-and-bren-wedding-website-backend",
+  "version": "1.0.0",
+  "description": "Express Hello World on Render",
+  "main": "server.js",
+  "repository": "https://github.com/Rykenny/ryanandbren/",
+  "author": "Render Developers",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.0.0"
+  }
+}
