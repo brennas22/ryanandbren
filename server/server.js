@@ -1,61 +1,52 @@
-const express = require("express");
+const express = require('express');
+const cors = require('cors');
+const fs = require('fs');
 const app = express();
 const port = process.env.PORT || 3001;
 
-app.get("/", (req, res) => res.type('html').send(html));
+app.use(cors());
+app.use(express.json());
 
-const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+let partyData = JSON.parse(fs.readFileSync('./data/partyData.json')); 
 
-server.keepAliveTimeout = 120 * 1000;
-server.headersTimeout = 120 * 1000;
+app.post('/rsvp', (req, res) => {
+  console.log('Received RSVP request:', req.body);
 
-const html = `
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Hello from Render!</title>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <script>
-      setTimeout(() => {
-        confetti({
-          particleCount: 100,
-          spread: 70,
-          origin: { y: 0.6 },
-          disableForReducedMotion: true
-        });
-      }, 500);
-    </script>
-    <style>
-      @import url("https://p.typekit.net/p.css?s=1&k=vnd5zic&ht=tk&f=39475.39476.39477.39478.39479.39480.39481.39482&a=18673890&app=typekit&e=css");
-      @font-face {
-        font-family: "neo-sans";
-        src: url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff2"), url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff"), url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("opentype");
-        font-style: normal;
-        font-weight: 700;
-      }
-      html {
-        font-family: neo-sans;
-        font-weight: 700;
-        font-size: calc(62rem / 16);
-      }
-      body {
-        background: white;
-      }
-      section {
-        border-radius: 1em;
-        padding: 1em;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        margin-right: -50%;
-        transform: translate(-50%, -50%);
-      }
-    </style>
-  </head>
-  <body>
-    <section>
-      Hello from Render!
-    </section>
-  </body>
-</html>
-`
+  const { code, memberRSVPs, memberAllergies } = req.body;
+  const lowerCaseCode = code.toLowerCase();  // Convert the incoming code to lowercase
+
+  // Find the party with a case-insensitive comparison
+  const foundPartyKey = Object.keys(partyData).find(
+    partyCode => partyCode.toLowerCase() === lowerCaseCode
+  );
+
+  if (foundPartyKey) {
+    const foundParty = partyData[foundPartyKey];
+
+    // Update the members' RSVP status and allergies
+    foundParty.members.forEach((member) => {
+      const fullName = `${member.firstname} ${member.lastname}`; // Construct the full name
+
+      // Update the RSVP status and allergies using the full name as the key
+      member.rsvp = memberRSVPs[fullName] || 'no';
+      member.allergies = memberAllergies[fullName] || '';
+    });
+
+    // Write the updated party data back to the file
+    fs.writeFileSync(
+      './data/partyData.json',
+      JSON.stringify(partyData, null, 2)
+    );
+    res.json({ message: 'RSVP received!' });
+  } else {
+    res.status(400).json({ error: 'Invalid party code' });
+  }
+});
+
+app.get('/partyData', (req, res) => {
+  res.json(partyData);
+});
+
+app.listen(port, () => {
+  console.log(`Server listening on port ${port}`);
+});
