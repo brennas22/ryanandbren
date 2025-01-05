@@ -1,35 +1,47 @@
 {
-  "name": "node-knockout-react-node-starter",
-  "version": "0.0.0",
+  "name": "swe432-heroku-react",
+  "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:5000",
   "dependencies": {
-    "express": "^4.16.4",
-    "express-enforces-ssl": "^1.1.0",
-    "helmet": "^3.14.0",
-    "react": "^16.5.2",
-    "react-dom": "^16.5.2",
-    "react-scripts": "2.0.5"
+    "@emotion/react": "^11.1.5",
+    "@emotion/styled": "^11.1.5",
+    "@material-ui/core": "^5.0.0-alpha.29",
+    "@material-ui/icons": "^5.0.0-alpha.28",
+    "axios": "0.21.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   },
   "devDependencies": {
-    "concurrently": "^4.0.1"
+    "@testing-library/jest-dom": "^5.11.10",
+    "@testing-library/react": "^11.2.6",
+    "@testing-library/user-event": "^7.2.1",
+    "react-scripts": "^4.0.3"
   },
   "scripts": {
-    "start": "concurrently \"react-scripts start\" \"node index\"",
-    "heroku-postbuild": "react-scripts build",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "start-dev": "react-scripts start",
+    "start": "react-scripts --openssl-legacy-provider start",
+    "build": "react-scripts --openssl-legacy-provider build",
+    "test": "react-scripts --openssl-legacy-provider test",
+    "eject": "react-scripts --openssl-legacy-provider eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
   "engines": {
-    "node": "8.12.0",
-    "yarn": "3.3.1",
-    "npm": "6.4.1"
-  },
-  "proxy": "http://localhost:3001",
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+    "node": ">=10",
+    "npm": ">=7"
+  }
 }
