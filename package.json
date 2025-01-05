@@ -1,30 +1,35 @@
 {
-  "name": "node-js-getting-started",
+  "name": "node-knockout-react-node-starter",
+  "version": "0.0.0",
   "private": true,
-  "description": "A sample Node.js app using Express",
-  "engines": {
-    "node": "18.x || 20.x || 22.x"
-  },
-  "main": "index.js",
-  "scripts": {
-    "start": "node index.js",
-    "test": "jest"
-  },
   "dependencies": {
-    "ejs": "^3.1.10",
-    "express": "^5.0.1"
+    "express": "^4.16.4",
+    "express-enforces-ssl": "^1.1.0",
+    "helmet": "^3.14.0",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "react-scripts": "2.0.5"
   },
   "devDependencies": {
-    "jest": "^29.7.0"
+    "concurrently": "^4.0.1"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/heroku/node-js-getting-started"
+  "scripts": {
+    "start": "concurrently \"react-scripts start\" \"node index\"",
+    "heroku-postbuild": "react-scripts build",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
   },
-  "keywords": [
-    "node",
-    "heroku",
-    "express"
-  ],
-  "license": "MIT"
+  "engines": {
+    "node": "8.12.0",
+    "yarn": "3.3.1",
+    "npm": "6.4.1"
+  },
+  "proxy": "http://localhost:3001",
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
