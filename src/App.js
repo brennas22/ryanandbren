@@ -4,6 +4,7 @@ import Layout from './Layout'; // Import the Layout component
 import HomePage from './HomePage';
 import RSVP from './RSVP';
 import FAQ from './FAQ';
+import PartyTable from './PartyTable'; // Import the PartyTable component
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="rsvp" element={<RSVP />} />
           <Route path="rsvp/:partyCode" element={<RSVP />} />
           <Route path="faq" element={<FAQ />} />
+          <Route path="party-table" element={<PartyTable />} /> {/* Add a route for PartyTable */}
         </Route>
       </Routes>
     </BrowserRouter>
@@ -21,3 +23,4 @@ function App() {
 }
 
 export default App;
+

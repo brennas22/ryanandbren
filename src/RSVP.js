@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
+import Masonry from 'react-masonry-css';
+import FAQ from './FAQ';
 import "./RSVP.css";
 
 function RSVP() {
@@ -20,6 +22,8 @@ function RSVP() {
   const [memberAllergies, setMemberAllergies] = useState({});
   const [inputPartyCode, setInputPartyCode] = useState(partyCode || "");
 
+  const API_URL = process.env.REACT_APP_API_URL;
+
 
   const guestImages = [
     '/guest-ill1.png', 
@@ -28,11 +32,18 @@ function RSVP() {
     '/guest-ill4.png',
   ];
 
+
+const breakpointColumns = {
+  default: 3, // Number of columns on large screens
+  1100: 2,    // 2 columns for medium screens
+  700: 1,     // 1 column for small screens
+};
+
   useEffect(() => {
     if (partyCode) {
       const fetchPartyData = async () => {
         try {
-          const response = await fetch("http://localhost:5001/partyData");
+          const response = await fetch(`${API_URL}/partyData`);
           if (response.ok) {
             const data = await response.json();
 
@@ -153,7 +164,7 @@ function RSVP() {
 
     setIsLoading(true);
     try {
-      const response = await fetch("http://localhost:5001/rsvp", {
+      const response = await fetch(`${API_URL}/rsvp`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code: partyCode, memberRSVPs, memberAllergies }),
@@ -176,25 +187,40 @@ function RSVP() {
     }
   };
 
-  const calculateSuccessMessage = (rsvpData) => {
-    const attendingGuests = Object.keys(rsvpData).filter(
-      (guestName) => rsvpData[guestName] === "yes"
+ const calculateSuccessMessage = (rsvpData) => {
+  const attendingGuests = Object.keys(rsvpData).filter(
+    (guestName) => rsvpData[guestName] === "yes"
+  );
+
+  const attendingFirstNames = attendingGuests.map((fullName) => {
+    return fullName.split(" ")[0];
+  });
+
+  if (attendingFirstNames.length === 0) {
+    setSuccessMessage(
+      <>
+        We'll miss you, but hope to see you soon!{" "}
+        
+      </>
     );
+  } else if (attendingFirstNames.length === 1) {
+    setSuccessMessage(
+      <>
+        We can't wait to celebrate with you, {attendingFirstNames[0]}!{" "}
+      </>
+    );
+  } else {
+    const guestList = attendingFirstNames.slice(0, -1).join(", ");
+    const lastGuest = attendingFirstNames[attendingFirstNames.length - 1];
+    setSuccessMessage(
+      <>
+        We can't wait to celebrate with you, {guestList} and {lastGuest}!{" "}
+        
+      </>
+    );
+  }
+};
 
-    const attendingFirstNames = attendingGuests.map((fullName) => {
-      return fullName.split(" ")[0];
-    });
-
-    if (attendingFirstNames.length === 0) {
-      setSuccessMessage("We'll miss you, but hope to see you soon!");
-    } else if (attendingFirstNames.length === 1) {
-      setSuccessMessage(`We can't wait to celebrate with you, ${attendingFirstNames[0]}!`);
-    } else {
-      const guestList = attendingFirstNames.slice(0, -1).join(", ");
-      const lastGuest = attendingFirstNames[attendingFirstNames.length - 1];
-      setSuccessMessage(`We can't wait to celebrate with you, ${guestList} and ${lastGuest}!`);
-    }
-  };
 
   const atLeastOneRSVP = Object.values(memberRSVPs).some((rsvp) => rsvp !== null);
 
@@ -204,7 +230,7 @@ function RSVP() {
     if (!inputPartyCode) return;
 
     try {
-      const response = await fetch("http://localhost:5001/partyData");
+      const response = await fetch(`${API_URL}/partyData`);
       if (response.ok) {
         const data = await response.json();
 
@@ -226,41 +252,50 @@ function RSVP() {
   };
 
   return (
-    <div className="rsvp-container">
-      <h1>Let us know if you can come!</h1>
+  <div className="rsvp-container">
+    <h1>Let us know if you can come!</h1>
+    <h3>Please RSVP for each person below</h3>
 
-      {/* If no party code is provided, show the party code input */}
-      {!partyCode && (
-        <form onSubmit={handlePartyCodeSubmit}>
-          <input
-            type="text"
-            value={inputPartyCode}
-            onChange={(event) => setInputPartyCode(event.target.value)}
-            placeholder="Enter your party code"
-            className="input-field"
-          />
-          <button type="submit">RSVP</button>
-          {invalidCodeError && <p className="error-message">{invalidCodeError}</p>}
-        </form>
-      )}
 
-      {partyFetched && party && (
-        <div>
-         
+    {/* If no party code is provided, show the party code input */}
+    {!partyCode && (
+      <form onSubmit={handlePartyCodeSubmit}>
+        <input
+          type="text"
+          value={inputPartyCode}
+          onChange={(event) => setInputPartyCode(event.target.value)}
+          placeholder="Enter your party code"
+          className="input-field"
+        />
+        <button type="submit">RSVP</button>
+        {invalidCodeError && <p className="error-message">{invalidCodeError}</p>}
+      </form>
+    )}
 
-          {party.photos && (
-            <div className="party-image-container">
-              {party.photos.map((photo, index) => (
-                <img
-                  key={index}
-                  src={photo}
-                  alt={`Party photo ${index + 1}`}
-                  className="party-images"
-                />
-              ))}
-            </div>
-          )}
+    {partyFetched && party && (
+      <>
 
+        {/* Party Photos Section (Moved Below Guest Notes and RSVP Section) */}
+        {party.photos && (
+          <Masonry
+            breakpointCols={breakpointColumns}
+            className="party-image-container"
+            columnClassName="party-masonry-column"
+          >
+            {party.photos.map((photo, index) => (
+              <img
+                key={index}
+                src={photo}
+                alt={`Party photo ${index + 1}`}
+                className="party-images"
+              />
+            ))}
+          </Masonry>
+        )}
+
+
+        {/* Constrained Section (Notes and Guest List) */}
+        <div className="constrained-section">
           {party.note && (
             <div className="guest-note-card">
               <p>{generateGreeting(party.members)}</p>
@@ -269,83 +304,97 @@ function RSVP() {
               </div>
               <p>Love,</p>
               <p>Ryan and Brenna</p>
-            </div>
-          )}
-
-          {party.members && (
-            <>
-              <ul className="guest-list">
-                {party.members.map((member, index) => {
-                  const fullName = `${member.firstname} ${member.lastname}`;
-                  return (
-                    <li key={fullName} className="guest-card">
-                      <div className="guest-card-content">
-                        <img
-                          src={guestImages[index % guestImages.length]}
-                          alt="Guest illustration"
-                          className="guest-card-image"
-                        />
-                        <div className="guest-details">
-                          <div><strong>{`${member.firstname} ${member.lastname}`}</strong></div>
-                          <div className="chip-container">
-                            <button
-                              className={`chip ${memberRSVPs[fullName] === "yes" ? "active" : ""}`}
-                              onClick={() => handleRSVPChange(fullName, "yes")}
-                            >
-                              Will be attending
-                            </button>
-                            <button
-                              className={`chip ${memberRSVPs[fullName] === "no" ? "active" : ""}`}
-                              onClick={() => handleRSVPChange(fullName, "no")}
-                            >
-                              Sadly cannot attend
-                            </button>
-                          </div>
-
-                          {memberRSVPs[fullName] === "yes" && (
-                            <div className="allergy-container">
-                              <textarea
-                                id={`${fullName}-allergies`}
-                                className="input-textarea"
-                                value={memberAllergies[fullName]}
-                                onChange={(e) => handleAllergyChange(fullName, e.target.value)}
-                                placeholder={
-                                  memberAllergies[fullName] === ""
-                                    ? "Please let us know about any dietary restrictions"
-                                    : ""
-                                }
-                                rows="3"
-                              />
-                            </div>
-                          )}
+              {party.members && (
+            <ul className="guest-list">
+              {party.members.map((member, index) => {
+                const fullName = `${member.firstname} ${member.lastname}`;
+                return (
+                  <li key={fullName} className="guest-card">
+                    <div className="guest-card-content">
+                      <img
+                        src={guestImages[index % guestImages.length]}
+                        alt="Guest illustration"
+                        className="guest-card-image"
+                      />
+                      <div className="guest-details">
+                        <div>
+                          <strong>{`${member.firstname} ${member.lastname}`}</strong>
                         </div>
-                      </div>
-                    </li>
-                  );
-                })}
-              </ul>
-            </>
-          )}
+                        <div className="chip-container">
+                          <button
+                            className={`chip ${
+                              memberRSVPs[fullName] === "yes" ? "active" : ""
+                            }`}
+                            onClick={() => handleRSVPChange(fullName, "yes")}
+                          >
+                            Will be attending
+                          </button>
+                          <button
+                            className={`chip ${
+                              memberRSVPs[fullName] === "no" ? "active" : ""
+                            }`}
+                            onClick={() => handleRSVPChange(fullName, "no")}
+                          >
+                            Sadly cannot attend
+                          </button>
+                        </div>
 
-          {atLeastOneRSVP && (
-            <div className="bottom-bar">
-              {showSuccess && successMessage ? (
-                <p>{successMessage}</p>
-              ) : (
-                <>
-                  <p>Guests Attending: {attendingCount}</p>
-                  {errorMessage && <p className="error-message-bar">{errorMessage}</p>}
-                </>
-              )}
-              <button onClick={handleRSVP} disabled={isLoading}>
-                {isLoading ? "Submitting..." : rsvpSubmitted ? "Update RSVP" : "Submit RSVP"}
-              </button>
+                        {memberRSVPs[fullName] === "yes" && (
+                          <div className="allergy-container">
+                            <textarea
+                              id={`${fullName}-allergies`}
+                              className="input-textarea"
+                              value={memberAllergies[fullName]}
+                              onChange={(e) =>
+                                handleAllergyChange(fullName, e.target.value)
+                              }
+                              placeholder={
+                                memberAllergies[fullName] === ""
+                                  ? "Please let us know about any dietary restrictions"
+                                  : ""
+                              }
+                              rows="3"
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
             </div>
           )}
+
+          
         </div>
-      )}
-    </div>
-  );
+
+        <FAQ/>
+
+        
+        {/* Bottom Bar for RSVP Summary */}
+        {atLeastOneRSVP && (
+          <div className="bottom-bar">
+            {showSuccess && successMessage ? (
+              <p>{successMessage}</p>
+            ) : (
+              <>
+                <p>Guests Attending: {attendingCount}</p>
+                {errorMessage && <p className="error-message-bar">{errorMessage}</p>}
+              </>
+            )}
+            <button onClick={handleRSVP} disabled={isLoading}>
+              {isLoading ? "Submitting..." : rsvpSubmitted ? "Update RSVP" : "Submit RSVP"}
+            </button>
+          </div>
+        )}
+      </>
+    )}
+  </div>
+);
+
+
 }
 
 export default RSVP;

@@ -2,32 +2,52 @@
 
 /* General container styling */
 .rsvp-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  padding-bottom: 100px; /* Add padding at the bottom to prevent content from being blocked */
+  width: 90%; /* Set the container width to 80% */
+ 
+  margin: 0 auto; /* Center the container horizontally */
+  padding: 20px 0px 100px 0px; /* Add some padding for breathing room */
+  box-sizing: border-box; /* Ensure padding doesn’t affect total width */
 }
 
-h1 {
+
+
+.constrained-section {
+  max-width: 1000px; /* Adjust this value to your desired constraint */
+  width: 100%; /* Allows it to expand to its max-width */
+  margin: 0 auto; /* Centers the section horizontally */
+  padding: 0 20px; /* Add padding for breathing room */
+  box-sizing: border-box; /* Ensures padding doesn’t increase width */
+}
+
+h1, h3 {
   text-align: center;
 }
 
-/* Party image container styling */
+/* Masonry Container */
 .party-image-container {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 20px;
-  margin-bottom: 30px;
+  justify-content: center; /* Center the entire grid */
+  margin: 0 auto; /* Center horizontally */
+  width: 100%; /* Use full width of the parent */
+  padding: 0; /* Remove extra padding */
+  box-sizing: border-box;
 }
 
+/* Columns inside Masonry */
+.party-masonry-column {
+  padding: 8px; /* Add spacing between images */
+  background-clip: padding-box; /* Ensure padding does not overlap */
+}
+
+/* Images */
 .party-images {
-  width: calc(50% - 10px); /* 50% width with gap for party images */
-  height: auto;
+  width: 100%; /* Images take up full column width */
+  display: block; /* Remove inline spacing */
+  margin-bottom: 16px; /* Consistent vertical spacing */
   border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+  transition: transform 0.3s ease;
 }
 
 /* Guest list styling */
@@ -49,7 +69,8 @@ h1 {
 /*  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
   padding: 20px;
   margin-bottom: 20px;
-  align-items: center;
+  align-items: top;
+  height: 180px;
 }
 
 .guest-card-content {
@@ -273,13 +294,18 @@ button:active {
 /* Media query for smaller screens */
 @media (max-width: 600px) {
   .rsvp-container {
-    width: 90%;
+    width: 95%;
     padding-bottom: 150px;
+  }
+
+  .constrained-section {
+    max-width: 100%;
   }
 
   .guest-card {
     flex-direction: column; /* Stack content vertically */
     align-items: center; /* Center-align content */
+    height: 100%;
   }
 
   .guest-card-content {

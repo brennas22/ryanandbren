@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './HomePage.css'; // Import your CSS file
 
+
+
 function HomePage() {
   const [partyCode, setPartyCode] = useState(""); // Store the party code input
   const [invalidCodeError, setInvalidCodeError] = useState(""); // Error message for invalid code
   const navigate = useNavigate(); // Use for redirection
+  const API_URL = process.env.REACT_APP_API_URL;
 
   // Handle the form submission for the party code
   const handlePartyCodeSubmit = async (event) => {
@@ -13,7 +16,7 @@ function HomePage() {
     if (!partyCode) return;
 
     try {
-      const response = await fetch("http://localhost:5001/partyData");
+      const response = await fetch(`${API_URL}/partyData`);
       if (response.ok) {
         const data = await response.json();
 
