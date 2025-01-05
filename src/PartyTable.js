@@ -5,7 +5,8 @@ const PartyTable = () => {
     const [partyData, setPartyData] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const API_URL = process.env.REACT_APP_API_URL;
+    const API_URL = 'https://storied-sunshine-5bbc86.netlify.app/';
+    //const API_URL = process.env.REACT_APP_API_URL;
 
     useEffect(() => {
         const fetchPartyData = async () => {

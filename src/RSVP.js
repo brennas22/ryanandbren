@@ -22,8 +22,8 @@ function RSVP() {
   const [memberAllergies, setMemberAllergies] = useState({});
   const [inputPartyCode, setInputPartyCode] = useState(partyCode || "");
 
-  const API_URL = process.env.REACT_APP_API_URL;
-
+  //const API_URL = process.env.REACT_APP_API_URL;
+  const API_URL = 'https://storied-sunshine-5bbc86.netlify.app/';
 
   const guestImages = [
     '/guest-ill1.png', 
