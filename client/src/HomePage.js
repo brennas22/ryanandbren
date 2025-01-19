@@ -8,7 +8,7 @@ function HomePage() {
   const [partyCode, setPartyCode] = useState(""); // Store the party code input
   const [invalidCodeError, setInvalidCodeError] = useState(""); // Error message for invalid code
   const navigate = useNavigate(); // Use for redirection
-  const API_URL = process.env.REACT_APP_API_URL;
+  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3001";
 
   // Handle the form submission for the party code
   const handlePartyCodeSubmit = async (event) => {
