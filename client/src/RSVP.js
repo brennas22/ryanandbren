@@ -44,8 +44,10 @@ const breakpointColumns = {
       const fetchPartyData = async () => {
         try {
           const response = await fetch(`${API_URL}/partyData`);
+          console.log(response);
           if (response.ok) {
             const data = await response.json();
+            console.log(data);
 
             const foundPartyKey = Object.keys(data).find(
               (partyCodeKey) => partyCodeKey.toLowerCase() === partyCode.toLowerCase()
@@ -231,6 +233,7 @@ const breakpointColumns = {
 
     try {
       const response = await fetch(`${API_URL}/partyData`);
+      console.log(response);
       if (response.ok) {
         const data = await response.json();
 
