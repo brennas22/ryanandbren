@@ -22,29 +22,40 @@ const pool = new pg.Pool({
 async function fetchPartyData(partyCode) {
   try {
     const client = await pool.connect();
-    const search_path = await client.query(`set search_path to ${schema};`);
-    const partyQuery = `select party_code, note, photos from parties where party_code = '${partyCode}';`;
-    const guestQuery = `select first_name, last_name, rsvp, allergies from guests where party_code = '${partyCode}';`;
+    await client.query(`SET search_path TO ${schema};`);
+    
+    // Queries for party and guest data
+    const partyQuery = `SELECT party_code, note, photos FROM parties WHERE party_code = $1;`;
+    const guestQuery = `SELECT first_name, last_name, rsvp, allergies FROM guests WHERE party_code = $1;`;
 
     const [partyResults, guestResults] = await Promise.all([
-      client.query(partyQuery),
-      client.query(guestQuery)
+      client.query(partyQuery, [partyCode]),
+      client.query(guestQuery, [partyCode]),
     ]);
-    const partyObject = partyResults.rows.reduce((acc, current) => {
-      acc[current.party_code] = {
-        'note':current.note, 
-        "photos":current.photos
-      };
-      return acc;
-    }, {});
-    partyObject.members = guestResults.rows;
+
+    if (partyResults.rows.length === 0) {
+      client.release();
+      return null; // No party found
+    }
+
+    // Construct the response object
+    const partyObject = {
+      [partyCode]: {
+        note: partyResults.rows[0].note,
+        photos: partyResults.rows[0].photos || [],
+        members: guestResults.rows, // Associate members here
+      },
+    };
+
     client.release();
     return partyObject;
   } catch (err) {
-    console.error('Error executing query', err);
+    console.error("Error executing query:", err);
     throw err;
   }
-};
+}
+
+
 
 app.use(cors());
 app.use(express.json());
