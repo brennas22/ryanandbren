@@ -43,15 +43,14 @@ function HomePage() {
   return (
     <div className="container">
       {/* Add both images */}
-      <img src="/mobile-image.png" alt="Mobile View" className="mobile-image" />
-      <img src="/desktop-image.png" alt="Desktop View" className="desktop-image" />
+      <img src="/engagement-mobile.jpg" alt="Mobile View" className="mobile-image" />
+      <img src="/engagement-desktop.jpg" alt="Desktop View" className="desktop-image" />
 
-      <h1>Ryan and Brenna are getting married (Again)!</h1>
+      <h1>Celebrate with us on September 13th!</h1>
       <p>
         Thank you so much to everyone who celebrated with us in January - we had so much fun, we decided we should do it all again! 
-        Just kidding, this was the plan all along. We're thrilled to invite you to save the date for our wedding on September 13th, 2025 
-        (1 year and 8 months to the day after our first wedding). We'll be having a ceremony - since the first one was just immediate family - 
-        followed by dinner, drinks, and dancing at Sarma, one of our absolute favorite restaurants, located in Somerville, MA. More details to follow soon!
+        Just kidding, this was the plan all along. We're thrilled to invite you to our wedding on September 13th, 2025 
+        (1 year and 8 months to the day after our first wedding). Enter your code from the invitiation to RSVP!
       </p>
 
       {/* Party code input form */}
