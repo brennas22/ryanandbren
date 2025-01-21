@@ -16,7 +16,7 @@ function HomePage() {
     if (!partyCode) return;
 
     try {
-      const response = await fetch(`${API_URL}/partyData`);
+      const response = await fetch(`${API_URL}/partyData/${partyCode}`);
       if (response.ok) {
         const data = await response.json();
 

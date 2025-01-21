@@ -43,18 +43,17 @@ const breakpointColumns = {
     if (partyCode) {
       const fetchPartyData = async () => {
         try {
-          const response = await fetch(`${API_URL}/partyData`);
+          const response = await fetch(`${API_URL}/partyData/${partyCode}`);
           console.log(response);
           if (response.ok) {
             const data = await response.json();
-            console.log(data);
 
             const foundPartyKey = Object.keys(data).find(
               (partyCodeKey) => partyCodeKey.toLowerCase() === partyCode.toLowerCase()
             );
 
             if (foundPartyKey) {
-              const foundParty = data[foundPartyKey];
+              const foundParty = data;
               setParty(foundParty);
               setPartyFetched(true);
 
@@ -64,7 +63,7 @@ const breakpointColumns = {
               let initialCount = 0;
 
               foundParty.members.forEach((member) => {
-                const fullName = `${member.firstname} ${member.lastname}`;
+                const fullName = `${member.first_name} ${member.last_name}`;
                 initialRSVPs[fullName] = member.rsvp ? member.rsvp : null;
 
                 if (member.rsvp === "yes") {
@@ -109,7 +108,8 @@ const breakpointColumns = {
 
   // Define the generateGreeting function here
   const generateGreeting = (members) => {
-    const firstNames = members.map(member => member.firstname);
+    console.log(members);
+    const firstNames = members.map(member => member.first_name);
     
     if (firstNames.length === 1) {
       return `Dear ${firstNames[0]},`;
@@ -232,7 +232,7 @@ const breakpointColumns = {
     if (!inputPartyCode) return;
 
     try {
-      const response = await fetch(`${API_URL}/partyData`);
+      const response = await fetch(`${API_URL}/partyData/${inputPartyCode}`);
       console.log(response);
       if (response.ok) {
         const data = await response.json();
@@ -310,7 +310,9 @@ const breakpointColumns = {
               {party.members && (
             <ul className="guest-list">
               {party.members.map((member, index) => {
-                const fullName = `${member.firstname} ${member.lastname}`;
+                const fullName = `${member._
+          
+                } ${member.last_name}`;
                 return (
                   <li key={fullName} className="guest-card">
                     <div className="guest-card-content">
@@ -321,7 +323,9 @@ const breakpointColumns = {
                       />
                       <div className="guest-details">
                         <div>
-                          <strong>{`${member.firstname} ${member.lastname}`}</strong>
+                          <strong>{`${member._
+                    
+                          } ${member.last_name}`}</strong>
                         </div>
                         <div className="chip-container">
                           <button

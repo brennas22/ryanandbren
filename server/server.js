@@ -19,35 +19,27 @@ const pool = new pg.Pool({
   ssl: 'true'
 });
 
-async function fetchPartyData() {
+async function fetchPartyData(partyCode) {
   try {
     const client = await pool.connect();
     const search_path = await client.query(`set search_path to ${schema};`);
-    const query = `select party_code, note, photos from parties;`;
-    const results = await client.query(query);
-    const resultsObject = results.rows.reduce((acc, current) => {
+    const partyQuery = `select party_code, note, photos from parties where party_code = '${partyCode}';`;
+    const guestQuery = `select first_name, last_name, rsvp, allergies from guests where party_code = '${partyCode}';`;
+
+    const [partyResults, guestResults] = await Promise.all([
+      client.query(partyQuery),
+      client.query(guestQuery)
+    ]);
+    const partyObject = partyResults.rows.reduce((acc, current) => {
       acc[current.party_code] = {
         'note':current.note, 
         "photos":current.photos
       };
       return acc;
     }, {});
+    partyObject.members = guestResults.rows;
     client.release();
-    return resultsObject;
-  } catch (err) {
-    console.error('Error executing query', err);
-    throw err;
-  }
-};
-
-async function fetchGuestData(partyCode) {
-  try {
-    const client = await pool.connect();
-    const search_path = await client.query(`set search_path to ${schema};`);
-    const query = `select first_name, last_name, rsvp, allergies from guests where party_code = '${partyCode}';`;
-    console.log(query)
-    const results = await client.query(query);
-    return results.rows;
+    return partyObject;
   } catch (err) {
     console.error('Error executing query', err);
     throw err;
@@ -92,15 +84,9 @@ app.post('/rsvp', (req, res) => {
   }
 });
 
-app.get('/partyData', async (req, res) => {
-  const data = await fetchPartyData();
-  res.json(data);
-});
-
-app.get('/guestData/:partyCode', async (req, res) => {
+app.get('/partyData/:partyCode', async (req, res) => {
   const partyCode = req.params.partyCode;
-
-  const data = await fetchGuestData(partyCode);
+  const data = await fetchPartyData(partyCode);
   res.json(data);
 });
 
