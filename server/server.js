@@ -60,37 +60,45 @@ async function fetchPartyData(partyCode) {
 app.use(cors());
 app.use(express.json());
 
-app.post('/rsvp', (req, res) => {
+app.post('/rsvp', async (req, res) => {
   console.log('Received RSVP request:', req.body);
+  const client = await pool.connect();
 
   const { code, memberRSVPs, memberAllergies } = req.body;
-  const lowerCaseCode = code.toLowerCase();  // Convert the incoming code to lowercase
-  console.log(Object.keys(partyData));
+  updateObject = {};
+  for (const key in memberRSVPs) {
+    const [first_name, last_name] = key.split(" ");
+    //last_name = last_name.trim();
+    const rsvp = memberRSVPs[key];
+    const allergies = memberAllergies[key];
+    updateObject[key] = {
+      first_name: first_name,
+      last_name: last_name,
+      rsvp: rsvp,
+      allergies: allergies,
+      party_code: code
+    }
+  };
 
-  // Find the party with a case-insensitive comparison
-  const foundPartyKey = Object.keys(partyData).find(
-    partyCode => partyCode.toLowerCase() === lowerCaseCode
-  );
+  const query_begining = "UPDATE guests as g SET rsvp = g2.rsvp, allergies = g2.allergies from (values ";
+  let query_middle = ""
+  for (const key in updateObject) {
+    query_middle += `('${updateObject[key].first_name}', 
+      '${updateObject[key].last_name}',
+      ${updateObject[key].rsvp},
+      '${updateObject[key].allergies}',
+      '${updateObject[key].party_code}'), `
+  };
+  query_middle = query_middle.slice(0, -2);
+  query_middle += ") as g2 (first_name, last_name, rsvp, allergies, party_code) where g.first_name = g2.first_name and g.last_name = g2.last_name;"
+  const query = query_begining + query_middle;
+  await client.query(`SET search_path TO ${schema};`);
 
-  if (foundPartyKey) {
-    const foundParty = partyData[foundPartyKey];
-
-    // Update the members' RSVP status and allergies
-    foundParty.members.forEach((member) => {
-      const fullName = `${member.firstname} ${member.lastname}`; // Construct the full name
-
-      // Update the RSVP status and allergies using the full name as the key
-      member.rsvp = memberRSVPs[fullName] || 'no';
-      member.allergies = memberAllergies[fullName] || '';
-    });
-
-    // Write the updated party data back to the file
-    fs.writeFileSync(
-      './data/partyData.json',
-      JSON.stringify(partyData, null, 2)
-    );
+  const updateResults = await client.query(query);
+  console.log(updateResults.rowCount, Object.keys(updateObject).length);
+  if (updateResults.rowCount == Object.keys(updateObject).length) {
     res.json({ message: 'RSVP received!' });
-  } else {
+  }else {
     res.status(400).json({ error: 'Invalid party code' });
   }
 });

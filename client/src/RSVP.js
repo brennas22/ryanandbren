@@ -62,7 +62,7 @@ function RSVP() {
                 const fullName = `${member.first_name} ${member.last_name}`;
                 initialRSVPs[fullName] = member.rsvp || null;
 
-                if (member.rsvp === "yes") {
+                if (member.rsvp === true) {
                   initialCount += 1;
                   rsvpAlreadySubmitted = true;
                 }
@@ -76,7 +76,7 @@ function RSVP() {
                 setRsvpSubmitted(true);
                 setShowSuccess(true);
                 calculateSuccessMessage(initialRSVPs);
-              } else if (Object.values(initialRSVPs).every((rsvp) => rsvp === "no")) {
+              } else if (Object.values(initialRSVPs).every((rsvp) => rsvp === false)) {
                 setRsvpSubmitted(true);
                 setShowSuccess(true);
                 setSuccessMessage("We'll miss you, but hope to see you soon!");
@@ -124,11 +124,11 @@ function RSVP() {
     setErrorMessage("");
 
     setAttendingCount((prevCount) => {
-      const isCurrentlyYes = memberRSVPs[fullName] === "yes";
-      if (newRsvpStatus === "yes" && !isCurrentlyYes) {
+      const isCurrentlyYes = memberRSVPs[fullName] === true;
+      if (newRsvpStatus === true && !isCurrentlyYes) {
         return prevCount + 1;
       }
-      if (newRsvpStatus === "no" && isCurrentlyYes) {
+      if (newRsvpStatus === false && isCurrentlyYes) {
         return Math.max(prevCount - 1, 0);
       }
       return prevCount;
@@ -185,7 +185,7 @@ function RSVP() {
 
   const calculateSuccessMessage = (rsvpData) => {
     const attendingGuests = Object.keys(rsvpData).filter(
-      (guestName) => rsvpData[guestName] === "yes"
+      (guestName) => rsvpData[guestName] === true
     );
 
     const attendingFirstNames = attendingGuests.map((fullName) =>
@@ -294,22 +294,22 @@ function RSVP() {
                           <div className="chip-container">
                             <button
                               className={`chip ${
-                                memberRSVPs[fullName] === "yes" ? "active" : ""
+                                memberRSVPs[fullName] === true ? "active" : ""
                               }`}
-                              onClick={() => handleRSVPChange(fullName, "yes")}
+                              onClick={() => handleRSVPChange(fullName, true)}
                             >
                               Will be attending
                             </button>
                             <button
                               className={`chip ${
-                                memberRSVPs[fullName] === "no" ? "active" : ""
+                                memberRSVPs[fullName] === false ? "active" : ""
                               }`}
-                              onClick={() => handleRSVPChange(fullName, "no")}
+                              onClick={() => handleRSVPChange(fullName, false)}
                             >
                               Sadly cannot attend
                             </button>
                           </div>
-                          {memberRSVPs[fullName] === "yes" && (
+                          {memberRSVPs[fullName] === true && (
                             <div className="allergy-container">
                               <textarea
                                 id={`${fullName}-allergies`}
