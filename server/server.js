@@ -5,10 +5,10 @@ const pg = require('pg'); // Install pg package: npm install pg
 const app = express();
 const port = process.env.PORT || 3001;
 
-const username = process.env.USERNAME || 'data';
-const hostname = process.env.HOSTNAME || 'dpg-ctthaq9u0jms73bj0cr0-a.virginia-postgres.render.com'
-const password = process.env.PASSWORD || 'zZsgVUWvt3wWxTICMCKNljDxHGonNma4'
-const schema = process.env.SCHEMA || 'dev'
+const username = process.env.USERNAME;
+const hostname = process.env.HOSTNAME;
+const password = process.env.PASSWORD;
+const schema = process.env.SCHEMA;
 
 const pool = new pg.Pool({
   user: username,
@@ -95,10 +95,9 @@ app.post('/rsvp', async (req, res) => {
   await client.query(`SET search_path TO ${schema};`);
 
   const updateResults = await client.query(query);
-  console.log(updateResults.rowCount, Object.keys(updateObject).length);
   if (updateResults.rowCount == Object.keys(updateObject).length) {
     res.json({ message: 'RSVP received!' });
-  }else {
+  }else {d
     res.status(400).json({ error: 'Invalid party code' });
   }
 });
