@@ -108,13 +108,13 @@ function RSVP() {
     const firstNames = members.map((member) => member.first_name);
   
     if (firstNames.length === 1) {
-      return `Dear ${firstNames[0]},`;
+      return `We hope you can join us ${firstNames[0]}!`;
     } else if (firstNames.length === 2) {
-      return `Dear ${firstNames[0]} and ${firstNames[1]},`;
+      return `We hope you can join us, ${firstNames[0]} and ${firstNames[1]}!`;
     } else {
       const guestList = firstNames.slice(0, -1).join(", ");
       const lastGuest = firstNames[firstNames.length - 1];
-      return `Dear ${guestList}, and ${lastGuest},`;
+      return `We hope you can join us, ${guestList}, and ${lastGuest}!`;
     }
   };
   
@@ -226,9 +226,6 @@ function RSVP() {
 
   return (
     <div className="rsvp-container">
-      <h1>Let us know if you can come!</h1>
-      <h3>Please RSVP for each person below</h3>
-
       {!partyCode && (
         <form onSubmit={handlePartyCodeSubmit}>
           <input
@@ -242,11 +239,151 @@ function RSVP() {
           {invalidCodeError && <p className="error-message">{invalidCodeError}</p>}
         </form>
       )}
-
+  
       {partyFetched && party && (
         <>
-          {party.photos && (
-            <Masonry
+      
+
+          {/* from portfolio */}
+          <div class="hero-section-wrapper">
+  <div class="hero-section">
+  {/* {party.photos && party.photos.length > 0 ? (
+  <img src={party.photos[0]} alt="First Party Photo" />
+) : (
+  <img src="/jan2024.jpg" alt="Default Image" /> // Provide a fallback
+)} */}
+
+  {/* <img src="/jan2024.jpg" alt="Desktop View"  /> */}
+
+  <div className="image-container-rsvp">
+      {/* <img src="/engagement-mobile.jpg" alt="Mobile View" className="mobile-image" /> */}
+  <img src="/jan2024.jpg" alt="Desktop View" className="jan-img" />
+  <img src="/guest-ill3.png" alt="Guest Illustration" className="guest-illustration-rsvp" />
+</div>
+
+    <header>
+      <div class="intro">
+      {/* <p class="overline">We're so excited!!!</p> */}
+        
+      
+            <div className="guest-note-card">
+              {party.note && (
+                <div >
+                  <h1>{generateGreeting(party.members)}</h1>
+                  <div className="party-note">
+                    <p>{party.note}</p>
+                  </div>
+                  <p>Love,</p>
+                  <p>Ryan and Brenna</p>
+                </div>
+              )}
+            </div>
+  
+            {Object.values(memberRSVPs).some((rsvp) => rsvp !== null) && (
+              <div className="bottom-bar">
+                {showSuccess && successMessage ? (
+                  <p>{successMessage}</p>
+                ) : (
+                  <>
+                    <p>Guests Attending: {attendingCount}</p>
+                    {errorMessage && <p className="error-message-bar">{errorMessage}</p>}
+                  </>
+                )}
+                <button onClick={handleRSVP} disabled={isLoading}>
+                  {isLoading ? "Submitting..." : rsvpSubmitted ? "Update RSVP" : "Submit RSVP"}
+                </button>
+              </div>
+            )}
+      </div>
+    </header>
+  </div>
+</div>
+  
+          {/* FAQ remains outside the colored background */}
+          <div className="content-section">
+            <p className="overline">Please let us know who's coming:</p>
+
+          
+
+            {/* 
+            {party.photos && party.photos.length > 1 && (
+  <Masonry
+    breakpointCols={breakpointColumns}
+    className="party-image-container"
+    columnClassName="party-masonry-column"
+  >
+    {party.photos.slice(1).map((photo, index) => (
+      <img
+        key={index}
+        src={photo}
+        alt={`Party photo ${index + 2}`} // Adjust index since we're skipping the first
+        className="party-images"
+      />
+    ))}
+  </Masonry>
+)}
+ */}
+
+{party.members && (
+                <ul className="guest-list">
+                  {party.members.map((member, index) => {
+                    const fullName = `${member.first_name} ${member.last_name}`;
+                    return (
+                      <li key={fullName} className="guest-card">
+                        <div className="guest-card-content">
+                          <img
+                            src={guestImages[index % guestImages.length]}
+                            alt="Guest illustration"
+                            className="guest-card-image"
+                          />
+                          <div className="guest-details">
+                            <div>
+                              <strong>{fullName}</strong>
+                            </div>
+                            <div className="chip-container">
+                              <button
+                                className={`chip ${
+                                  memberRSVPs[fullName] === true ? "active" : ""
+                                }`}
+                                onClick={() => handleRSVPChange(fullName, true)}
+                              >
+                                Will be attending
+                              </button>
+                              <button
+                                className={`chip ${
+                                  memberRSVPs[fullName] === false ? "active" : ""
+                                }`}
+                                onClick={() => handleRSVPChange(fullName, false)}
+                              >
+                                Sadly cannot attend
+                              </button>
+                            </div>
+                            {memberRSVPs[fullName] === true && (
+                              <div className="allergy-container">
+                                <textarea
+                                  id={`${fullName}-allergies`}
+                                  className="input-textarea"
+                                  value={memberAllergies[fullName]}
+                                  onChange={(e) =>
+                                    handleAllergyChange(fullName, e.target.value)
+                                  }
+                                  placeholder="Please let us know about any dietary restrictions"
+                                  rows="3"
+                                />
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+
+<p className="overline">We love our memories with you!</p>
+
+{party.photos && (
+              <Masonry
               breakpointCols={breakpointColumns}
               className="party-image-container"
               columnClassName="party-masonry-column"
@@ -260,99 +397,14 @@ function RSVP() {
                 />
               ))}
             </Masonry>
-          )}
-
-          <div className="constrained-section">
-          {party.note && (
-  <div className="guest-note-card">
-    <p>{generateGreeting(party.members)}</p>
-    <div className="party-note">
-      <p>{party.note}</p>
-    </div>
-    <p>Love,</p>
-    <p>Ryan and Brenna</p>
-  </div>
-)}
-
-
-            {party.members && (
-              <ul className="guest-list">
-                {party.members.map((member, index) => {
-                  const fullName = `${member.first_name} ${member.last_name}`;
-                  return (
-                    <li key={fullName} className="guest-card">
-                      <div className="guest-card-content">
-                        <img
-                          src={guestImages[index % guestImages.length]}
-                          alt="Guest illustration"
-                          className="guest-card-image"
-                        />
-                        <div className="guest-details">
-                          <div>
-                            <strong>{fullName}</strong>
-                          </div>
-                          <div className="chip-container">
-                            <button
-                              className={`chip ${
-                                memberRSVPs[fullName] === true ? "active" : ""
-                              }`}
-                              onClick={() => handleRSVPChange(fullName, true)}
-                            >
-                              Will be attending
-                            </button>
-                            <button
-                              className={`chip ${
-                                memberRSVPs[fullName] === false ? "active" : ""
-                              }`}
-                              onClick={() => handleRSVPChange(fullName, false)}
-                            >
-                              Sadly cannot attend
-                            </button>
-                          </div>
-                          {memberRSVPs[fullName] === true && (
-                            <div className="allergy-container">
-                              <textarea
-                                id={`${fullName}-allergies`}
-                                className="input-textarea"
-                                value={memberAllergies[fullName]}
-                                onChange={(e) =>
-                                  handleAllergyChange(fullName, e.target.value)
-                                }
-                                placeholder="Please let us know about any dietary restrictions"
-                                rows="3"
-                              />
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </li>
-                  );
-                })}
-              </ul>
             )}
-          </div>
 
           <FAQ />
-
-          {Object.values(memberRSVPs).some((rsvp) => rsvp !== null) && (
-            <div className="bottom-bar">
-              {showSuccess && successMessage ? (
-                <p>{successMessage}</p>
-              ) : (
-                <>
-                  <p>Guests Attending: {attendingCount}</p>
-                  {errorMessage && <p className="error-message-bar">{errorMessage}</p>}
-                </>
-              )}
-              <button onClick={handleRSVP} disabled={isLoading}>
-                {isLoading ? "Submitting..." : rsvpSubmitted ? "Update RSVP" : "Submit RSVP"}
-              </button>
-            </div>
-          )}
+          </div>
         </>
       )}
     </div>
   );
-}
+}  
 
 export default RSVP;

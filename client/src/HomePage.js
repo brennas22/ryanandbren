@@ -41,10 +41,17 @@ function HomePage() {
   };
 
   return (
-    <div className="container">
+    <div className="home-container">
+      <div className="inner-container">
       {/* Add both images */}
+      {/* <img src="/engagement-mobile.jpg" alt="Mobile View" className="mobile-image" />
+      <img src="/engagement-desktop.jpg" alt="Desktop View" className="desktop-image" /> */}
+      <div className="image-container">
       <img src="/engagement-mobile.jpg" alt="Mobile View" className="mobile-image" />
-      <img src="/engagement-desktop.jpg" alt="Desktop View" className="desktop-image" />
+  <img src="/engagement-desktop.jpg" alt="Desktop View" className="desktop-image" />
+  <img src="/guest-ill1.png" alt="Guest Illustration" className="guest-illustration" />
+</div>
+      
 
       <h1>Celebrate with us on September 13th!</h1>
       <p>
@@ -66,6 +73,7 @@ function HomePage() {
         {/* Display error message if party code is invalid */}
         {invalidCodeError && <p className="error-message">{invalidCodeError}</p>}
       </form>
+      </div>
     </div>
   );
 }

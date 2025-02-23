@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom'; // Outlet will render the matched chi
 function Layout() {
   return (
     <div>
-      <Navbar /> {/* The navbar will be rendered on all pages */}
+      <Navbar />
       <main>
         <Outlet /> {/* This is where the child routes (pages) will be rendered */}
       </main>

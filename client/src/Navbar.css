@@ -1,44 +1,119 @@
-
-/* Navbar styling */
+/* General Navbar Styles */
 .navbar {
-/*  background: #F7E9CA;*/
-  display: flex; /* Flexbox for layout */
-  justify-content: left; /* Center the navbar contents horizontally */
-  padding: 1rem 2rem;
-  width: 100%; /* Ensure the navbar takes up full width */
-  box-sizing: border-box; /* Ensure padding doesn't affect width */
-}
-
-
-.navbar ul {
-    list-style: none;
   display: flex;
-  gap: 20px; /* Add space between the links */
-  padding: 0; /* Remove default padding */
-  margin: 0; /* Remove default margin */
+  justify-content: space-between; /* Space between logo and links */
+  align-items: center; /* Vertically align items */
+  padding: 24px 340px;
+  background-color:  #23483E;
 }
 
-.navbar ul li {
-  display: inline;
-}
-
-.navbar ul li a {
-  color: #255153;
-  font-weight: 500;
+.navbar-logo  {
+  font-family: "FatFrank", "Work Sans", sans-serif; 
+  font-size: 1.4rem;
   text-decoration: none;
-  padding: 10px;
-  font-family: 'Dela Gothic One', sans-serif; 
+  color: #F2E8CE;
 }
 
-.navbar ul li a:hover {
-/*  background-color: #555;*/
-  color: #092A2C;
-  border-radius: 5px;
+.navbar-links {
+  display: flex;
+  gap: 20px; /* Space between links */
 }
 
-/* Media query for smaller screens */
-@media (max-width: 600px) {
+.navbar-links a {
+  text-decoration: none;
+  color: #F2E8CE;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: color 0.2s ease-in-out;
+  
+}
+
+.navbar-links a:hover {
+  color: #FFF;
+}
+
+/* Hamburger Menu */
+.hamburger-menu {
+  display: none; /* Hide by default */
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
+}
+
+.hamburger-menu .bar {
+  width: 25px;
+  height: 3px;
+  background-color: #fff;
+}
+
+/* Mobile-Only Styles */
+@media (max-width: 1043px) {
   .navbar {
-  justify-content: center; /* Center the navbar contents horizontally */
- }
+    padding: 24px 32px ;
+    position: relative; /* Allow positioning of the drawer */
+  }
+
+  .hamburger-menu {
+    display: flex; /* Show hamburger menu on mobile */
+  }
+
+  .navbar-links {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: fixed;
+    top: 0;
+    left: 0; /* Ensure it starts at the left edge */
+    width: 100vw; /* Make it take the full width of the viewport */
+    height: 100vh; /* Full height */
+    background-color: #967B51; /* Keep the same background */
+    padding: 40px 20px; /* Add spacing */
+    box-shadow: none; /* Remove right-side shadow */
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(100%); /* Start hidden */
+    z-index: 1000;
+  }
+
+  .navbar-links.open {
+    transform: translateX(0); /* Slide in from the right */
+  }
+
+
+
+  .overlay {
+    display: block; /* Ensure overlay appears */
+  }
+
+  .close-button {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #fff;
+    cursor: pointer;
+    position: absolute;
+    top: 2%;
+    right: 12%;
+    z-index: 1001; /* Ensure button is above everything else */
+    box-shadow: none;
+  }
+
+  .close-button:hover {
+    color: #093548; /* Change color on hover */
+  }
+
+ 
+
+  .overlay.open {
+    display: block; /* Show overlay when menu is open */
+  }
+
+  
+}
+
+/* Desktop Styles */
+@media (min-width: 1044px) {
+  .close-button {
+    display: none; /* Hide the close button on desktop */
+  }
 }

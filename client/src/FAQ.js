@@ -5,7 +5,7 @@ import './FAQ.css'; // Import your CSS file
 function FAQ() {
   return (
   
-    <div className="container">
+    <div className="faq-container">
       <h1>Things you need to know</h1>
       <h3>Where is the wedding?</h3>
       <p>Our wedding will take place at Sarma, a restaurant in Somerville, MA (249 Pearl St, Somerville, MA 02145). There will be an afterparty for anyone who still wants to boogie at the Abbey, a bar in Cambridge.</p>

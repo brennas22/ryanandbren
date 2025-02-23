@@ -2,13 +2,96 @@
 
 /* General container styling */
 .rsvp-container {
-  width: 90%; /* Set the container width to 80% */
- 
-  margin: 0 auto; /* Center the container horizontally */
-  padding: 20px 0px 100px 0px; /* Add some padding for breathing room */
+  /* width: 90%; Set the container width to 80% */
+
+  margin: -1px auto; /* Center the container horizontally */
+  padding: 0px 0px 100px 0px; /* Add some padding for breathing room */
   box-sizing: border-box; /* Ensure padding doesn’t affect total width */
 }
 
+
+.rsvp-content {
+  background-color: #14544F; /* Light gray or any color of your choice */
+  padding: 20px;
+  /* border-radius: 10px; */
+  /* margin: 20px 0; */
+}
+
+/* from portfolio */
+.hero-section-wrapper {
+  display: flex; /* Enables Flexbox */
+  justify-content: center; /* Horizontally center content */
+  align-items: center; /* Vertically center content */
+  background-color: #23483E; /* Light blue */
+  color: #F2E8CE;
+}
+
+
+.hero-section {
+  display: flex; /* Enables Flexbox for image and text alignment */
+  flex-direction: row; /* Align image and text horizontally */
+  align-items: center; /* Vertically align text relative to the image */
+  justify-content: center; /* Ensure equal spacing horizontally */
+  gap: 40px; /* Space between the image and text */
+  max-width: 1200px; /* Restrict maximum width of the content */
+  width: 100%; /* Ensure the content spans the available width */
+  /* color: #fff; */
+  padding: 20px 340px 40px 340px; 
+
+}
+
+.jan-img {
+  /* max-width: 50%; Restrict the image to half the container width */
+  height: auto; /* Maintain aspect ratio */
+  margin: 20px auto; /* Center the image on desktop and add spacing */
+  max-width: 800px;  /* Limit the size of the desktop image */
+  width: 100%;       /* Make the desktop image responsive */
+  height: auto;
+  
+}
+
+.image-container-rsvp {
+  max-width: 50%;
+  position: relative; /* Allows absolute positioning inside */
+  display: inline-block; /* Keeps the container size restricted to the image */
+}
+
+.guest-illustration-rsvp {
+  position: absolute;
+  top: -50px; /* Adjust to overlap below */
+  right: -24px; /* Adjust to overlap left */
+  width: 164px; /* Adjust size as needed */
+  height: auto;
+  z-index: 10; /* Ensure it appears above other elements */
+}
+
+/* .intro {
+  margin-bottom: 56px;
+} */
+
+
+.hero-section h1 {
+  font-size: 1.6rem;
+  /* line-height: 2.2rem; */
+  font-family: fatfrank,sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  text-align: left;
+}
+
+.overline {
+  font-family: "mrs-eaves-roman-small-caps", serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+  /* margin-top: 40px; */
+}
+/* end from portfolio */
+
+.content-section {
+  padding: 20px 340px 40px 340px; 
+}
 
 
 .constrained-section {
@@ -26,86 +109,101 @@ h1, h3 {
 /* Masonry Container */
 .party-image-container {
   display: flex;
-  justify-content: center; /* Center the entire grid */
-  margin: 0 auto; /* Center horizontally */
-  width: 100%; /* Use full width of the parent */
-  padding: 0; /* Remove extra padding */
+  justify-content: center; /* Centers the masonry layout */
+  margin: 0 auto; /* Centers the container */
+  width: 100%; /* Ensures it takes the full width of the constrained section */
+  max-width: 100%; /* Prevents extra margins */
+  padding: 0; /* Removes extra padding */
   box-sizing: border-box;
 }
 
-/* Columns inside Masonry */
+/* Masonry Column */
 .party-masonry-column {
-  padding: 8px; /* Add spacing between images */
-  background-clip: padding-box; /* Ensure padding does not overlap */
+  padding: 8px; /* Space between images */
+  background-clip: padding-box;
+  width: 100% !important; /* Ensures columns take full width */
 }
 
 /* Images */
 .party-images {
-  width: 100%; /* Images take up full column width */
-  display: block; /* Remove inline spacing */
+  width: 100%; /* Ensures images are responsive */
+  display: block; /* Removes inline spacing */
   margin-bottom: 16px; /* Consistent vertical spacing */
-  border-radius: 8px;
+  /* border-radius: 8px; */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   object-fit: cover;
   transition: transform 0.3s ease;
 }
 
-/* Guest list styling */
+
+/* RSVP guest list container */
 .guest-list {
-  list-style: none;
-  padding: 0;
+  display: flex; /* Enables Flexbox for image and text alignment */
+  flex-direction: column; /* Align image and text horizontally */
+  align-items: center; /* Vertically align text relative to the image */
+  justify-content: center; /* Ensure equal spacing horizontally */
+  gap: 16px; /* Space between the image and text */
+  /* max-width: 1200px; Restrict maximum width of the content */
+  
+  /* color: #fff; */
+  padding: 0; 
+  /* height: 240px; */
 }
 
-.guest-list li {
-  margin-bottom: 20px;
-}
 
-/* Card layout for each guest */
+
+
+
+
+/* RSVP guest card styling */
 .guest-card {
   display: flex;
-  justify-content: flex-start;
+  flex-direction: row;
+  align-items: center;
   background-color: #fff;
   border-radius: 10px;
-/*  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
   padding: 20px;
-  margin-bottom: 20px;
-  align-items: top;
-  height: 180px;
+  gap: 20px;
+  width: 100%; /* Make it responsive */
+  /* max-width: 700px; Prevents overflow */
+  box-sizing: border-box; /* Ensures padding doesn't increase width */
+  margin: 0 auto; /* Centers within guest-list */
+  overflow: hidden; /* Ensures no content overflows */
 }
 
+
+
+
+/* Ensures image and text are properly aligned */
 .guest-card-content {
   display: flex;
+  align-items: center;
   gap: 20px;
+  width: 100%;
 }
 
 /* Guest image styling */
 .guest-card-image {
-  width: 150px;
-  height: 150px;
+  width: 120px;
+  height: 120px;
   object-fit: cover;
   border-radius: 50%;
 }
 
-/* Guest details styling */
+/* Guest details */
 .guest-details {
   display: flex;
   flex-direction: column;
-  width: 100%; /* Ensure the details run full width */
+  width: 100%;
   text-align: left;
 }
 
-/* Guest name styling with Dela Gothic One font */
-.guest-details > div strong {
-  font-family: 'Dela Gothic One', sans-serif; /* Apply Dela Gothic One */
-  font-size: 18px; /* Increase font size */
-  color: #333; /* Optional: Set color */
-}
-
-/* Chip container styling */
+/* RSVP button container */
 .chip-container {
   display: flex;
+  flex-wrap: wrap; /* Allows wrapping if needed */
   gap: 10px;
-  margin-top: 10px; /* Add margin between guest name and chips */
+  margin-top: 10px;
 }
 
 .chip {
@@ -209,6 +307,7 @@ button:active {
 }
 
 
+
 /* Bottom bar styling */
 .bottom-bar {
   position: fixed;
@@ -222,7 +321,7 @@ button:active {
   align-items: center;
   padding: 20px;
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
+  z-index: 999;
 }
 
 .bottom-bar p {
@@ -264,9 +363,9 @@ button:active {
 
 /* Guest note card styling */
 .guest-note-card {
-  border: 1px solid black; /* Black border */
-  border-radius: 12px; /* Border radius */
-  padding: 24px; /* Padding inside the card */
+  /* border: 1px solid black; Black border */
+  /* border-radius: 12px; Border radius */
+  /* padding: 24px; Padding inside the card */
   font-family: 'Crimson Text', serif; /* Crimson Text font */
   font-size: 1.2rem;
   margin-bottom: 20px; /* Space below the card */
@@ -292,20 +391,59 @@ button:active {
 
 
 /* Media query for smaller screens */
-@media (max-width: 600px) {
+@media (max-width: 1439px) {
   .rsvp-container {
-    width: 95%;
+    /* width: 95%; */
     padding-bottom: 150px;
   }
+
+  .hero-section {
+      padding: 20px;
+    }
+
+   
+    .hero-section {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .image-container-rsvp {
+      max-width: 100%;
+    }
+
+    .jan-img {
+        max-width: 100%; /* Restrict image width to full width of the container */
+      }
+
+      .guest-illustration-rsvp {
+        position: absolute;
+        top: -24px; /* Adjust to overlap below */
+        right: -24px; /* Adjust to overlap left */
+        width: 100px; /* Adjust size as needed */
+        height: auto;
+        z-index: 10; /* Ensure it appears above other elements */
+      }
+
+      .content-section {
+        padding: 20px; 
+      }
 
   .constrained-section {
     max-width: 100%;
   }
 
+  .guest-list {
+    
+    max-width: 100%; /* Ensure it doesn’t exceed the viewport width */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Ensures cards are centered */
+  }
+
   .guest-card {
-    flex-direction: column; /* Stack content vertically */
-    align-items: center; /* Center-align content */
-    height: 100%;
+    width: 100%; /* Make sure the card takes up available space within .guest-list */
+    /* max-width: 500px; Set a reasonable max width */
+    padding: 16px;
   }
 
   .guest-card-content {
@@ -313,6 +451,7 @@ button:active {
     gap: 10px;
     width: 100%; /* Make the content full width */
     align-items: center;
+    
   }
 
   .guest-card-image {
@@ -328,7 +467,8 @@ button:active {
 
   .input-textarea {
     width: 100%;
-    max-width: 600px;
+    /* max-width: 600px; */
+    max-width: none;
   }
 
   .chip-container {
