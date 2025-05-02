@@ -1,0 +1,30 @@
+.party-table-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: auto;
+}
+
+.party-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.party-table th, .party-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.party-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.party-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.party-table tr:hover {
+    background-color: #eaeaea;
+}
