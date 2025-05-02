@@ -25,8 +25,8 @@ async function fetchPartyData(partyCode) {
     await client.query(`SET search_path TO ${schema};`);
     
     // Queries for party and guest data
-    const partyQuery = `SELECT party_code, note, photos FROM parties WHERE party_code = $1;`;
-    const guestQuery = `SELECT first_name, last_name, rsvp, allergies FROM guests WHERE party_code = $1;`;
+    const partyQuery = `SELECT party_code, note, photos FROM parties WHERE lower(party_code) = lower($1);`;
+    const guestQuery = `SELECT first_name, last_name, rsvp, allergies FROM guests WHERE lower(party_code) = lower($1);`;
 
     const [partyResults, guestResults] = await Promise.all([
       client.query(partyQuery, [partyCode]),
