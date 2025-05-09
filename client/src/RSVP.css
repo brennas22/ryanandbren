@@ -59,7 +59,7 @@
 .guest-illustration-rsvp {
   position: absolute;
   top: -50px; /* Adjust to overlap below */
-  right: -24px; /* Adjust to overlap left */
+  left: -24px; /* Adjust to overlap left */
   width: 164px; /* Adjust size as needed */
   height: auto;
   z-index: 10; /* Ensure it appears above other elements */
@@ -68,6 +68,10 @@
 /* .intro {
   margin-bottom: 56px;
 } */
+
+header {
+  flex: 1;
+}
 
 
 .hero-section h1 {
