@@ -119,6 +119,7 @@ h1, h3 {
   padding: 0;
   box-sizing: border-box;
   justify-content: center;
+  overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
 /* Masonry Column */
@@ -401,47 +402,61 @@ button:active {
 /* Media query for smaller screens */
 @media (max-width: 1439px) {
   .rsvp-container {
-    /* width: 95%; */
     padding-bottom: 150px;
+    width: 100%;
+    overflow-x: hidden; /* Prevent horizontal scroll */
   }
 
   .hero-section {
-      padding: 20px;
-    }
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+  }
 
-   
-    .hero-section {
-        flex-direction: column;
-        gap: 0;
-    }
+  .content-section {
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+  }
 
-    .image-container-rsvp {
-      max-width: 100%;
-    }
+  .party-image-container {
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
+  }
 
-    .jan-img {
-        max-width: 100%; /* Restrict image width to full width of the container */
-      }
+  .party-masonry-column {
+    padding: 4px; /* Reduce padding on mobile */
+  }
 
-      .guest-illustration-rsvp {
-        position: absolute;
-        top: -24px; /* Adjust to overlap below */
-        right: -24px; /* Adjust to overlap left */
-        width: 100px; /* Adjust size as needed */
-        height: auto;
-        z-index: 10; /* Ensure it appears above other elements */
-      }
+  .party-images {
+    max-height: 500px;
+    margin-bottom: 8px;
+  }
 
-      .content-section {
-        padding: 20px; 
-      }
+  .hero-section {
+    flex-direction: column;
+    gap: 0;
+  }
 
-  .constrained-section {
+  .image-container-rsvp {
     max-width: 100%;
   }
 
+  .jan-img {
+    max-width: 100%; /* Restrict image width to full width of the container */
+  }
+
+  .guest-illustration-rsvp {
+    position: absolute;
+    top: -24px; /* Adjust to overlap below */
+    right: -24px; /* Adjust to overlap left */
+    width: 100px; /* Adjust size as needed */
+    height: auto;
+    z-index: 10; /* Ensure it appears above other elements */
+  }
+
   .guest-list {
-    
     max-width: 100%; /* Ensure it doesn't exceed the viewport width */
     display: flex;
     flex-direction: column;
@@ -450,7 +465,6 @@ button:active {
 
   .guest-card {
     width: 100%; /* Make sure the card takes up available space within .guest-list */
-    /* max-width: 500px; Set a reasonable max width */
     padding: 16px;
   }
 
@@ -475,7 +489,6 @@ button:active {
 
   .input-textarea {
     width: 100%;
-    /* max-width: 600px; */
     max-width: none;
   }
 
@@ -488,13 +501,7 @@ button:active {
     width: 100%; /* Make each chip full width */
   }
 
-  /* Make the party images full width on mobile */
-  .party-images {
-    width: 100%; /* Full width for RSVP images on mobile */
-    margin-bottom: 8px;
-  }
-
-    .bottom-bar {
+  .bottom-bar {
     justify-content: center; /* Center the content on mobile */
     flex-direction: column;  /* Stack content vertically */
     text-align: center; /* Center-align text */
@@ -512,14 +519,5 @@ button:active {
   .bottom-bar button {
     width: 100%; /* Make the button full width on mobile */
     max-width: 300px;
-  }
-
-  .party-image-container {
-    max-width: 100%;
-    padding: 0; /* Remove padding on mobile */
-  }
-
-  .party-images {
-    max-height: 500px;
   }
 }
