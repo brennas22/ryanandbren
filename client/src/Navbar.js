@@ -36,7 +36,7 @@ const Navbar = () => {
           &times;
         </button>
         <Link to="/gifts" onClick={closeMobileMenu}>Gifts</Link>
-        <Link to="/faq-container" rel="noopener noreferrer">FAQs</Link>
+        <Link to="/faq-container" onClick={closeMobileMenu} rel="noopener noreferrer">FAQs</Link>
       </div>
     </nav>
   );

@@ -7,7 +7,9 @@ function FAQ() {
       <p className="overline">Things you need to know</p>
       
       <h4>Where is the wedding?</h4>
-      <p>Our wedding will take place at Sarma, a restaurant in Somerville, MA (249 Pearl St, Somerville, MA 02145). There will be an afterparty for anyone who still wants to boogie at the Abbey, a bar in Cambridge.</p>
+      <p>Our wedding will take place at Sarma, a restaurant in Somerville, MA (249 Pearl St, Somerville, MA 02145). 
+        There will be an afterparty for anyone who still wants to boogie at the Abbey, a bar in Cambridge.</p>
+      <p>The festivities will begin promptly at 5 PM and go until 10:30 PM. The after party will be from 10:30 until 2 AM, or whenever they kick us out.</p>
       <h4>What should I wear?</h4>
       <p>This is a FANCY wedding!! Please use it as an excuse to get dressed to the nines, but you can skip the tuxedo, a suit is fine. 
         For folks in dresses, we would love if you wore ankle or full length dresses in <strong> colorful floral prints</strong>. Ryan 
