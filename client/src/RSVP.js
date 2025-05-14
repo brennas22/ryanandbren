@@ -30,10 +30,9 @@ function RSVP() {
   ];
 
   const breakpointColumns = {
-    default: 4,
-    1600: 3,
-    1200: 2,
-    700: 1,
+    default: 3,     // Maximum of 3 columns for desktop
+    1200: 2,        // 2 columns for medium screens
+    700: 1          // 1 column for mobile
   };
 
   useEffect(() => {

@@ -115,10 +115,10 @@ h1, h3 {
   display: flex;
   margin: 0 auto;
   width: 100%;
-  max-width: 1200px; /* Limit maximum width for better layout control */
+  max-width: 1200px;
   padding: 0;
   box-sizing: border-box;
-  justify-content: center; /* Center the columns */
+  justify-content: center;
 }
 
 /* Masonry Column */
@@ -516,10 +516,10 @@ button:active {
 
   .party-image-container {
     max-width: 100%;
-    padding: 0 20px; /* Add some padding on smaller screens */
+    padding: 0; /* Remove padding on mobile */
   }
 
   .party-images {
-    max-height: 500px; /* Slightly smaller max height on mobile */
+    max-height: 500px;
   }
 }
