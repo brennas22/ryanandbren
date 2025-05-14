@@ -29,13 +29,13 @@ function HomePage() {
       } else {
         console.error("Error fetching party data");
         setInvalidCodeError(
-          "There was an error connecting to the server. Please try again later."
+          "Something went wrong. If you continue having issues please reach out to Ryan or Brenna!"
         );
       }
     } catch (error) {
       console.error("Error fetching party data:", error);
       setInvalidCodeError(
-        "An error occurred while processing your request. Please try again later."
+        "Something went wrong. If you continue having issues please reach out to Ryan or Brenna!"
       );
     }
   };

@@ -61,8 +61,8 @@
   background-color: #45a049;
 }
 
-.error-message {
-  color: #81D1D;
+.home-container .error-message {
+  color: #FFDADA;  /* Light pink color that will be visible against the green background */
   margin-top: 10px;
   font-size: 14px;
 }

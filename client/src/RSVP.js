@@ -30,8 +30,9 @@ function RSVP() {
   ];
 
   const breakpointColumns = {
-    default: 3,
-    1100: 2,
+    default: 4,
+    1600: 3,
+    1200: 2,
     700: 1,
   };
 
@@ -173,11 +174,11 @@ function RSVP() {
       } else {
         const data = await response.json();
         console.error("RSVP failed:", data.error);
-        alert("RSVP failed. Please try again later.");
+        alert("Something went wrong. If you continue having issues please reach out to Ryan or Brenna!");
       }
     } catch (error) {
       console.error("Error sending RSVP:", error);
-      alert("An error occurred. Please try again later.");
+      alert("Something went wrong. If you continue having issues please reach out to Ryan or Brenna!");
     } finally {
       setIsLoading(false);
     }
